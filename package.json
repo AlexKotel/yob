@@ -1,0 +1,76 @@
+{
+
+	"name":  "yob",
+
+	"version": "0.0.1",
+
+	"dependencies": {},
+
+	"devDependencies": {
+
+		"grunt": "",
+		"grunt-svgmin": "",
+		"grunt-webfont": "",
+		"grunt-svg-sprite": "",
+		"grunt-contrib-copy": "",
+		"grunt-contrib-clean": "",
+		"load-grunt-tasks": "",
+
+		"gulp": "",
+		"gulp-if": "",
+		"gulp-open": "",
+		"gulp-util": "",
+		"gulp-grunt": "",
+		"gulp-clean": "",
+		"gulp-ngmin": "",
+		"gulp-concat": "",
+		"gulp-rename": "",
+		"gulp-filter": "",
+		"gulp-uglify": "",
+		"gulp-flatten": "",
+		"gulp-changed": "",
+		"gulp-jade": "",
+		"gulp-coffee": "",
+		"gulp-stylus": "",
+		"gulp-inject": "",
+		"gulp-plumber": "",
+		"gulp-cssmin": "",
+		"gulp-imagemin": "",
+		"gulp.spritesmith": "",
+		"gulp-autoprefixer": "",
+		"gulp-load-plugins": "",
+
+		"watchify": "",
+		"coffeeify": "",
+		"browserify": "",
+		"debowerify": "",
+		"browserify-shim": "",
+
+		"q": "",
+		"lodash": "",
+		"optimist": "",
+		"browser-sync": "",
+		"streamqueue": "",
+		"run-sequence": "",
+		"coffee-script": "",
+		"vinyl-source-stream": ""
+
+	},
+
+	"browser": {
+		"jquery": "./bower_components/jquery/dist/jquery.js",
+		"angular": "./bower_components/angular/angular.js"
+	},
+
+	"browserify-shim": {
+		"angular": "angular"
+	},
+
+	"browserify": {
+		"transform": [
+			"coffeeify",
+			"browserify-shim"
+		]
+	}
+
+}

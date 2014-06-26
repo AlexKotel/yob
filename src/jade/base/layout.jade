@@ -1,0 +1,13 @@
+extends root
+
+block layout
+
+	.l(ng-app="app")
+
+		.l-main(ng-controller="AppCtrl")
+
+			.l-header
+				include ../inc/header
+
+			.l-content
+				block content
