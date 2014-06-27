@@ -6,8 +6,9 @@
 
 	"dependencies": {
 
+		"lodash": "",
 		"jquery": "1",
-		"angular": "",
+		"fastclick": "",
 		"bootstrap": ""
 
 	}

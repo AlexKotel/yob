@@ -1,13 +1,16 @@
 extends root
 
-block layout
+block body
 
-	.l(ng-app="app")
+	.l
 
-		.l-main(ng-controller="AppCtrl")
+		.l-main
 
 			.l-header
 				include ../inc/header
 
 			.l-content
 				block content
+
+			.l-footer
+				include ../inc/header
