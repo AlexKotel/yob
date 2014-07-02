@@ -1,16 +1,9 @@
 {
-
-	"name": "yob",
-
+	"name": "app",
 	"version": "0.0.1",
-
 	"dependencies": {
-
 		"lodash": "",
 		"jquery": "1",
-		"fastclick": "",
 		"bootstrap": ""
-
 	}
-
 }

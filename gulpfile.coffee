@@ -1,8 +1,4 @@
-# Arguments
-# ====================================================================
 argv = require('optimist').argv
-PROD = argv.prod
-DEV = !argv.prod
 
 
 
@@ -16,26 +12,40 @@ $.grunt g
 
 # Dependencies
 # ====================================================================
-_ = require 'lodash'
-q = require 'q'
-path = require 'path'
-source = require 'vinyl-source-stream'
-sequence = require 'run-sequence'
 streamqueue = require 'streamqueue'
 browsersync = require 'browser-sync'
 spritesmith = require 'gulp.spritesmith'
+sequence = require 'run-sequence'
+source = require 'vinyl-source-stream'
+path = require 'path'
+_ = require 'lodash'
+q = require 'q'
 
 
 
 # Config
 # ====================================================================
-CONFIG_BROWSERIFY   = false
-CONFIG_ICONFONT     = true
-CONFIG_SVGSPRITE    = true
-CONFIG_PNGSPRITE    = true
-CONFIG_RETINASPRITE = true
+CONFIG =
+	BROWSERIFY: false
+	ICONFONT: false
+	SVGSPRITE: false
+	PNGSPRITE: true
+	RETINASPRITE: true
+	PORT: argv.port or 8000
+
+SELECTEL =
+	USER: 'xxx'
+	PASS: 'xxx'
+	HOST: 'https://xxx.selcdn.ru/xxx'
+	TOKEN: 'xxx'
+	ARCHIVE: 'dist.tar.gz'
+
+TIMESTAMP = Date.now()
+PROD = argv.prod
+DEV = !argv.prod
 DIST = 'dist'
 SRC = 'src'
+
 
 
 
@@ -48,7 +58,6 @@ paths =
 		src: [
 			'bower_components/jquery/dist/jquery.js'
 			'bower_components/lodash/dist/lodash.js'
-			'bower_components/fastclick/lib/fastclick.js'
 			'bower_components/bootstrap/dist/js/bootstrap.js'
 		]
 
@@ -60,6 +69,7 @@ paths =
 
 	appScripts:
 		dest: "#{DIST}/js"
+		main: "#{SRC}/scripts/app.coffee"
 		cwd: "#{SRC}/scripts"
 		src: [
 			"#{SRC}/scripts/app.coffee"
@@ -68,9 +78,10 @@ paths =
 
 	appStyles:
 		dest: "#{DIST}/css"
+		main: "#{SRC}/styles/app.styl"
 		cwd: "#{SRC}/styles"
 		src: [
-			"#{SRC}/styles/app.styl"
+			"#{SRC}/styles/**/*.styl"
 		]
 
 	pages:
@@ -82,6 +93,12 @@ paths =
 		dest: "#{DIST}/views"
 		cwd: "#{SRC}/views"
 		src: ["#{SRC}/jade/views/**/*.jade"]
+
+	jade:
+		src: [
+			"#{SRC}/jade/inc/**/*.jade"
+			"#{SRC}/jade/base/**/*.jade"
+		]
 
 	img:
 		dest: "#{DIST}/assets/img"
@@ -103,6 +120,11 @@ paths =
 # Helpers
 # ====================================================================
 helpers =
+
+	svgFilter: $.filter '**/*.svg'
+	pngFilter: $.filter '**/*.png'
+	jpgFilter: $.filter '**/*.jpg'
+	gifFilter: $.filter '**/*.gif'
 
 	errorHandler: (err) ->
 
@@ -128,62 +150,72 @@ tasks =
 			# Distribution
 			"#{DIST}"
 
+			# Jade root
+			"#{SRC}/jade/base/root.jade"
+
 			# Iconfont
-			"#{SRC}/assets/font/iconfont.{woff,ttf,eot,svg}"
+			"#{SRC}/assets/font/iconfont-*.{woff,ttf,eot,svg}"
 			"#{SRC}/styles/tools/iconfont.styl"
 			"#{SRC}/tools/iconfont/optimized"
 			"#{SRC}/tools/iconfont/dist"
 
 			# Sprite SVG
-			"#{SRC}/assets/img/sprite.svg"
-			"#{SRC}/styles/tools/svgsprite.styl"
+			"#{SRC}/assets/img/sprite-*.svg"
+			"#{SRC}/styles/tools/sprite-svg.styl"
 			"#{SRC}/tools/svgsprite/optimized"
 			"#{SRC}/tools/svgsprite/dist"
 
 			# Sprite PNG
-			"#{SRC}/assets/img/sprite.png"
-			"#{SRC}/styles/tools/pngsprite.styl"
+			"#{SRC}/assets/img/sprite-*.png"
+			"#{SRC}/styles/tools/sprite-png.styl"
 			"#{SRC}/tools/pngsprite/optimized"
 
 			# Sprite Retina
-			"#{SRC}/assets/img/sprite@1x.png"
-			"#{SRC}/assets/img/sprite@2x.png"
-			"#{SRC}/styles/tools/retinasprite.styl"
+			"#{SRC}/assets/img/sprite-*@1x.png"
+			"#{SRC}/assets/img/sprite-*@2x.png"
+			"#{SRC}/styles/tools/sprite-retina.styl"
 			"#{SRC}/tools/retinasprite/optimized"
 
 		]
 
-		g.src src, read: false
+		stream = g.src src, read: false
 			.pipe $.clean()
 
 	depScripts: ->
 
-		g.src paths.depScripts.src
+		stream = g.src paths.depScripts.src
 			.pipe $.if PROD, $.concat('vendor.concated.js')
 			.pipe $.if PROD, $.uglify()
 			.pipe $.if DEV, g.dest(paths.depScripts.dest)
 
 	depStyles: ->
 
-		g.src paths.depStyles.src
+		stream = g.src paths.depStyles.src
 			.pipe $.if PROD, $.concat('vendor.concated.css')
 			.pipe $.if PROD, $.cssmin()
 			.pipe $.if DEV, g.dest(paths.depStyles.dest)
 
-	appScripts: ->
+	appScripts: (onlyChanged) ->
 
-		g.src paths.appScripts.src
-			.pipe $.changed paths.appScripts.dest, extension: '.js'
+		stream = g.src paths.appScripts.src
+
+		if onlyChanged
+			stream = stream
+				.pipe $.changed paths.appScripts.dest, extension: '.js'
+
+		stream = stream
 			.pipe $.plumber()
+			.pipe $.if DEV, $.sourcemaps.init()
 			.pipe $.coffee()
 			.pipe $.if PROD, $.concat('app.concated.js')
 			.pipe $.if PROD, $.ngmin()
 			.pipe $.if PROD, $.uglify(mangle: false)
+			.pipe $.if DEV, $.sourcemaps.write()
 			.pipe $.if DEV, g.dest(paths.appScripts.dest)
 
 	appStyles: ->
 
-		g.src paths.appStyles.src
+		stream = g.src paths.appStyles.main
 			.pipe $.plumber()
 			.pipe $.stylus()
 			.pipe $.autoprefixer()
@@ -192,7 +224,7 @@ tasks =
 
 	inject: ->
 
-		injector = "#{SRC}/jade/base/root.jade"
+		injector = "#{SRC}/jade/base/__root.jade"
 
 		suffix = if PROD then "?#{Date.now()}" else ''
 
@@ -203,23 +235,23 @@ tasks =
 			ignorePath: "/#{DIST}/"
 			transform: (filepath) ->
 				switch helpers.getExtension(filepath)
-					when 'css' then return "link(href='#{filepath}#{suffix}' rel='stylesheet')"
-					when 'js' then return "script(src='#{filepath}#{suffix}')"
+					when 'css' then return "link(href='#{filepath}' rel='stylesheet')"
+					when 'js' then return "script(src='#{filepath}')"
 
 		jsStream = ->
-			streamqueue(objectMode: true)
-				.queue tasks.depScripts
-				.queue tasks.appScripts
+			stream = streamqueue(objectMode: true)
+			stream = stream.queue(tasks.depScripts) if paths.depScripts.src.length
+			stream = stream.queue(tasks.appScripts)
 				.done()
-				.pipe $.if PROD, $.concat('build.js')
+				.pipe $.if PROD, $.concat("build-#{TIMESTAMP}.js")
 				.pipe $.if PROD, g.dest(paths.appScripts.dest)
 
 		cssStream = ->
-			streamqueue(objectMode: true)
-				.queue tasks.depStyles
-				.queue tasks.appStyles
+			stream = streamqueue(objectMode: true)
+			stream = stream.queue(tasks.depStyles) if paths.depStyles.src.length
+			stream = stream.queue(tasks.appStyles)
 				.done()
-				.pipe $.if PROD, $.concat('build.css')
+				.pipe $.if PROD, $.concat("build-#{TIMESTAMP}.css")
 				.pipe $.if PROD, g.dest(paths.appStyles.dest)
 
 		injectStream = ->
@@ -228,22 +260,31 @@ tasks =
 				.queue cssStream
 				.done()
 
-		g.src injector
+		stream = g.src injector
 			.pipe $.inject(injectStream(), config)
+			.pipe $.rename('root.jade')
 			.pipe g.dest("#{SRC}/jade/base")
 
-	pages: ->
+	pages: (onlyChanged) ->
 
-		g.src paths.pages.src
-			# .pipe $.changed paths.pages.dest, extension: '.html'
+		stream = g.src paths.pages.src
+
+		if onlyChanged
+			stream = stream.pipe $.changed paths.pages.dest, extension: '.html'
+
+		stream = stream
 			.pipe $.plumber()
 			.pipe $.jade pretty: true
 			.pipe g.dest paths.pages.dest
 
-	views: ->
+	views: (onlyChanged) ->
 
-		g.src paths.views.src
-			# .pipe $.changed paths.views.dest, extension: '.html'
+		stream = g.src paths.views.src
+
+		if onlyChanged
+			stream = stream.pipe $.changed paths.views.dest, extension: '.html'
+
+		stream = stream
 			.pipe $.plumber()
 			.pipe $.jade pretty: true
 			.pipe g.dest paths.views.dest
@@ -252,91 +293,97 @@ tasks =
 
 		stream = g.src paths.img.src
 
-		stream
-			.pipe $.filter '**/*.svg'
 			.pipe $.changed paths.img.dest
-			.pipe g.dest paths.img.dest
 
-		stream
-			.pipe $.filter '**/*.png'
-			.pipe $.changed paths.img.dest
-			.pipe $.imagemin()
-			.pipe g.dest paths.img.dest
+			# .pipe helpers.pngFilter
+			# .pipe helpers.pngFilter.restore()
 
-		stream
-			.pipe $.filter '**/*.jpg'
-			.pipe $.changed paths.img.dest
-			.pipe g.dest paths.img.dest
+			# .pipe helpers.svgFilter
+			# .pipe helpers.svgFilter.restore()
 
-		stream
-			.pipe $.filter '**/*.gif'
-			.pipe $.changed paths.img.dest
-			.pipe g.dest paths.img.dest
+			# .pipe helpers.jpgFilter
+			# .pipe helpers.jpgFilter.restore()
 
-		stream
+			# .pipe helpers.gifFilter
+			# .pipe helpers.gifFilter.restore()
+
+			.pipe $.if PROD, $.imagemin()
+			.pipe g.dest paths.img.dest
 
 	font: ->
 
-		g.src paths.font.src
+		stream = g.src paths.font.src
 			.pipe $.changed paths.font.dest
 			.pipe g.dest paths.font.dest
 
 	data: ->
 
-		g.src paths.data.src
+		stream = g.src paths.data.src
 			.pipe $.changed paths.data.dest
 			.pipe g.dest paths.data.dest
 
 	pngSprite: ->
 
+		imgName = "sprite-#{TIMESTAMP}"
+		cssName = "sprite-png"
+
 		config =
-			imgName: 'sprite.png'
-			imgPath: '../assets/img/sprite.png'
-			cssName: 'pngsprite.css'
+			imgName: "#{imgName}.png"
+			imgPath: "../assets/img/#{imgName}.png"
+			cssName: "#{cssName}.css"
+			algorithm: 'binary-tree'
 			cssOpts:
 				cssClass: (item) -> ".i.i-#{item.name}"
 
 		stream = g.src "#{SRC}/tools/pngsprite/src/*.png"
-			.pipe $.imagemin()
+			.pipe $.if PROD, $.imagemin()
 			.pipe g.dest "#{SRC}/tools/pngsprite/optimized"
 			.pipe spritesmith config
+
+		stream.css
+			.pipe $.rename "#{cssName}.styl"
+			.pipe g.dest "#{paths.appStyles.cwd}/tools"
 
 		stream.img
 			.pipe g.dest paths.img.cwd
 
-		stream.css
-			.pipe $.rename 'pngsprite.styl'
-			.pipe g.dest "#{paths.appStyles.cwd}/tools"
-
 	retinaSprite1: ->
 
+		imgName = "sprite-#{TIMESTAMP}@1x"
+		cssName = "sprite-retina"
+
 		config =
-			imgName: 'sprite@1x.png'
-			imgPath: '../assets/img/sprite@1x.png'
-			cssName: 'retinasprite.css'
+			imgName: "#{imgName}.png"
+			imgPath: "../assets/img/#{imgName}.png"
+			cssName: "#{cssName}.css"
+			algorithm: 'binary-tree'
 			cssOpts:
 				cssClass: (item) -> ".png.png-#{item.name}"
 
 		stream = g.src "#{SRC}/tools/retinasprite/src/x1/*.png"
-			.pipe $.imagemin()
+			.pipe $.if PROD, $.imagemin()
 			.pipe g.dest "#{SRC}/tools/retinasprite/optimized/x1"
 			.pipe spritesmith config
+
+		stream.css
+			.pipe $.rename "#{cssName}.styl"
+			.pipe g.dest "#{paths.appStyles.cwd}/tools"
 
 		stream.img
 			.pipe g.dest paths.img.cwd
 
-		stream.css
-			.pipe $.rename 'retinasprite.styl'
-			.pipe g.dest "#{paths.appStyles.cwd}/tools"
-
 	retinaSprite2: ->
 
+		imgName = "sprite-#{TIMESTAMP}@2x"
+		cssName = "WILL_BE_NOT_USED_BUT_REQUIRED"
+
 		config =
-			imgName: 'sprite@2x.png'
-			cssName: 'retinasprite@2x.css' # will be not used
+			imgName: "#{imgName}.png"
+			cssName: "#{cssName}.css"
+			algorithm: 'binary-tree'
 
 		stream = g.src "#{SRC}/tools/retinasprite/src/x2/*.png"
-			.pipe $.imagemin()
+			.pipe $.if PROD, $.imagemin()
 			.pipe g.dest "#{SRC}/tools/retinasprite/optimized/x2"
 			.pipe spritesmith config
 
@@ -348,15 +395,21 @@ tasks =
 		app = [
 			"#{DIST}/*.html"
 			"#{DIST}/js/**/*.js"
+			"!#{DIST}/js/dep/**/*.js"
 			"#{DIST}/css/*.css"
+			"!#{DIST}/css/dep/*.css"
 			"#{DIST}/views/**/*.html"
 			"#{DIST}/assets/img/**/*.{png,jpg,gif,svg}"
 			"#{DIST}/assets/font/*.{woff,ttf,eot,svg}"
 		]
 
 		config =
+			reloadDelay: 200
 			server:
 				baseDir: "#{DIST}"
+			ports:
+				min: CONFIG.PORT
+				max: CONFIG.PORT
 			browser: [
 				# 'opera'
 				# 'safari'
@@ -399,22 +452,42 @@ g.task 'server', tasks.server
 # ====================================================================
 g.task 'watch', ->
 
+	# Assets
 	g.watch paths.img.src, ['img']
 	g.watch paths.font.src, ['font']
 	g.watch paths.data.src, ['data']
 
-	g.watch paths.views.src, ['views']
-	g.watch paths.pages.src, ['pages']
-
-	g.watch paths.appStyles.src, ['styles']
-	g.watch paths.appScripts.src, ['scripts']
-
+	# Tools
 	g.watch ["#{SRC}/tools/iconfont/src/*.svg"], ['grunt-font']
 	g.watch ["#{SRC}/tools/svgsprite/src/*.svg"], ['grunt-svg']
 	g.watch ["#{SRC}/tools/pngsprite/src/*.png"], ['pngsprite']
 	g.watch ["#{SRC}/tools/retinasprite/src/x1/*.png"], ['retinasprite1']
 	g.watch ["#{SRC}/tools/retinasprite/src/x2/*.png"], ['retinasprite2']
-	g.watch ["#{SRC}/jade/inc/**/*.jade", "#{SRC}/jade/base/**/*.jade"], ['pages', 'views']
+
+	# Styles
+	g.watch paths.appStyles.src, ['styles']
+
+	# Scripts
+	g.watch paths.appScripts.src, (e) ->
+		if e.type is 'added'
+			tasks.inject()
+
+		if e.type is 'changed'
+			tasks.appScripts(true)
+
+	# Jade
+	g.watch paths.views.src
+		.on 'change', ->
+			tasks.views(true)
+
+	g.watch paths.pages.src
+		.on 'change', ->
+			tasks.pages(true)
+
+	g.watch paths.jade.src
+		.on 'change', ->
+			tasks.pages()
+			tasks.views()
 
 
 
@@ -422,25 +495,20 @@ g.task 'watch', ->
 # ====================================================================
 g.task 'default', ->
 
-	# Tools
-	tools = []
-	tools.push 'pngsprite' if CONFIG_PNGSPRITE
-	tools.push 'grunt-svg' if CONFIG_SVGSPRITE
-	tools.push 'grunt-font' if CONFIG_ICONFONT
-	tools.push 'retinasprite1' if CONFIG_RETINASPRITE
-	tools.push 'retinasprite2' if CONFIG_RETINASPRITE
-
-	# Assets
-	assets = []
-	assets.push 'img'
-	assets.push 'data'
-	assets.push 'font'
-	assets.push 'views'
-
 	# Tasks
 	args = ['clean']
-	args.push tools if tools.length
-	args.push assets  if assets.length
+
+	args.push 'pngsprite' if CONFIG.PNGSPRITE
+	args.push 'grunt-svg' if CONFIG.SVGSPRITE
+	args.push 'grunt-font' if CONFIG.ICONFONT
+	args.push 'retinasprite1' if CONFIG.RETINASPRITE
+	args.push 'retinasprite2' if CONFIG.RETINASPRITE
+
+	args.push 'img'
+	args.push 'data'
+	args.push 'font'
+	args.push 'views'
+
 	args.push 'inject'
 	args.push 'pages'
 	args.push 'watch' if DEV
@@ -450,20 +518,58 @@ g.task 'default', ->
 	sequence.apply @, args
 
 
-# TODO:
 
-# Test watch
-# Compile only changed pages and views
-# Generate png sprite variables for stylus
-# Sync removing files from src to dist
-# Add task 'extra copy'
-# Add browserify support
-# Add PORT configuration
-# Add ./server + proxy
-# Feel difference between 'browserify on change' and 'watchify'
-# Configure iconfont
-# Configure svg-sprite
-# Configure $.imagemin for .svg
-# Configure $.imagemin for .jpg
-# Configure $.imagemin for .gif
-# Remove limit of 256 files in linux
+# DEPLOY
+# ====================================================================
+g.task 'deploy', do ->
+
+	$.shell.task [
+
+		# Selectel deploy
+		# "tar czvf #{SELECTEL.ARCHIVE} #{DIST}"
+		# "curl -i -X PUT '#{SELECTEL.HOST}/?extract-archive=tar.gz' -H 'X-Auth-Token: #{SELECTEL.TOKEN}' -T '#{SELECTEL.ARCHIVE}'"
+
+		# Simple git deploy
+		# "git add ."
+		# "git commit -m 'New build'"
+		# "git push origin master"
+
+		# Simple heroku deploy
+		# "git push heroku master"
+		
+	]
+
+g.task 'auth', $.shell.task [""]
+
+
+### TODO:
+
+[ ] Test watch images
+[x] Test watch jade
+[x] Test watch stylus
+[x] Test watch coffee
+[x] Test watch assets
+[x] Compile only changed pages and views
+[x] Compile only changed scripts
+[ ] Optimize and copy only changed images/data/fonts
+[x] Timestamp in all sprites
+[x] Autoinject new scripts
+[x] Add .coffee sourcemaps
+[x] Add PORT
+[x] Add task 'deploy'
+[ ] Add link in stylus to @2x sprite
+[ ] Remove timestamp in iconfont.styl
+[ ] Generate png/retina sprite variables for stylus
+[ ] Sync removing files from src to dist
+[ ] Add browserify support
+[ ] Add ./server + proxy support
+[ ] Add task 'extra copy'
+[ ] Feel difference between 'browserify on change' and 'watchify'
+[ ] Configure iconfont
+[ ] Configure svg-sprite
+[ ] Configure $.imagemin for .svg
+[ ] Configure $.imagemin for .jpg
+[ ] Configure $.imagemin for .gif
+[ ] Refactor autoinject
+
+###

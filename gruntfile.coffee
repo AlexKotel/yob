@@ -1,5 +1,6 @@
-SRC = 'src'
+TIMESTAMP = Date.now()
 DIST = 'dist'
+SRC = 'src'
 
 module.exports = (grunt) ->
 
@@ -65,7 +66,7 @@ module.exports = (grunt) ->
 			font:
 
 				options:
-					font: 'iconfont'
+					font: "iconfont-#{TIMESTAMP}"
 					engine: 'node'
 					hashes: false
 					htmlDemo: false
@@ -87,10 +88,10 @@ module.exports = (grunt) ->
 				options:
 					dims: true
 					common: 'svg'
-					sprite: 'sprite'
+					sprite: "sprite-#{TIMESTAMP}"
 					render:
 						css:
-							dest: 'svgsprite.css'
+							dest: 'sprite-svg.css'
 
 
 	grunt.registerTask 'svg', [
