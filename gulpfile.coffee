@@ -536,10 +536,12 @@ g.task 'deploy', do ->
 
 		# Simple heroku deploy
 		# "git push heroku master"
-		
+
 	]
 
-g.task 'auth', $.shell.task [""]
+g.task 'auth', $.shell.task [
+	"curl -i https://auth.selcdn.ru/ -H 'X-Auth-User:#{SELECTEL.USER}' -H 'X-Auth-Key:#{SELECTEL.PASS}'"
+]
 
 
 ### TODO:
