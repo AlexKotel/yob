@@ -1,6 +1,8 @@
+CONFIG = require './config'
+
 TIMESTAMP = Date.now()
-DIST = 'dist'
-SRC = 'src'
+DIST = CONFIG.dist
+SRC = CONFIG.src
 
 module.exports = (grunt) ->
 

@@ -1,5 +1,5 @@
+CONFIG = require './config'
 argv = require('optimist').argv
-
 
 
 # Gulp / Grunt
@@ -16,6 +16,7 @@ streamqueue = require 'streamqueue'
 browsersync = require 'browser-sync'
 spritesmith = require 'gulp.spritesmith'
 sequence = require 'run-sequence'
+sizeOf = require 'image-size'
 source = require 'vinyl-source-stream'
 path = require 'path'
 _ = require 'lodash'
@@ -25,26 +26,13 @@ q = require 'q'
 
 # Config
 # ====================================================================
-CONFIG =
-	BROWSERIFY: false
-	ICONFONT: false
-	SVGSPRITE: false
-	PNGSPRITE: true
-	RETINASPRITE: true
-	PORT: argv.port or 8000
-
-SELECTEL =
-	USER: 'xxx'
-	PASS: 'xxx'
-	HOST: 'https://xxx.selcdn.ru/xxx'
-	TOKEN: 'xxx'
-	ARCHIVE: 'dist.tar.gz'
-
 TIMESTAMP = Date.now()
+STYLUS_DATA = {}
+JADE_DATA = {}
 PROD = argv.prod
 DEV = !argv.prod
-DIST = 'dist'
-SRC = 'src'
+DIST = CONFIG.dist
+SRC = CONFIG.src
 
 
 
@@ -78,7 +66,7 @@ paths =
 
 	appStyles:
 		dest: "#{DIST}/css"
-		main: "#{SRC}/styles/app.styl"
+		main: "#{SRC}/styles/__app.styl"
 		cwd: "#{SRC}/styles"
 		src: [
 			"#{SRC}/styles/**/*.styl"
@@ -150,8 +138,9 @@ tasks =
 			# Distribution
 			"#{DIST}"
 
-			# Jade root
+			# Underscore template results
 			"#{SRC}/jade/base/root.jade"
+			"#{SRC}/styles/app.styl"
 
 			# Iconfont
 			"#{SRC}/assets/font/iconfont-*.{woff,ttf,eot,svg}"
@@ -215,7 +204,14 @@ tasks =
 
 	appStyles: ->
 
+		STYLUS_DATA.retinaSpriteUrl = "../assets/img/sprite-#{TIMESTAMP}@2x.png"
+		STYLUS_DATA.retinaSpriteWidth = sizeOf("src/assets/img/sprite-#{TIMESTAMP}@2x.png").width
+		STYLUS_DATA.retinaSpriteHeight = sizeOf("src/assets/img/sprite-#{TIMESTAMP}@2x.png").height
+
 		stream = g.src paths.appStyles.main
+			.pipe $.rename('app.styl')
+			.pipe $.template STYLUS_DATA
+			.pipe g.dest(paths.appStyles.cwd)
 			.pipe $.plumber()
 			.pipe $.stylus()
 			.pipe $.autoprefixer()
@@ -232,7 +228,7 @@ tasks =
 			addRootSlash: false
 			startag: '| <!-- inject:{ext} -->'
 			endtag:  '| <!-- endinject -->'
-			ignorePath: "/#{DIST}/"
+			ignorePath: "/dist/"
 			transform: (filepath) ->
 				switch helpers.getExtension(filepath)
 					when 'css' then return "link(href='#{filepath}' rel='stylesheet')"
@@ -274,7 +270,7 @@ tasks =
 
 		stream = stream
 			.pipe $.plumber()
-			.pipe $.jade pretty: true
+			.pipe $.jade pretty: true, data: JADE_DATA
 			.pipe g.dest paths.pages.dest
 
 	views: (onlyChanged) ->
@@ -286,7 +282,7 @@ tasks =
 
 		stream = stream
 			.pipe $.plumber()
-			.pipe $.jade pretty: true
+			.pipe $.jade pretty: true, data: JADE_DATA
 			.pipe g.dest paths.views.dest
 
 	img: ->
@@ -392,6 +388,8 @@ tasks =
 
 	server: (next) ->
 
+		server = require './server/server'
+
 		app = [
 			"#{DIST}/*.html"
 			"#{DIST}/js/**/*.js"
@@ -405,11 +403,10 @@ tasks =
 
 		config =
 			reloadDelay: 200
-			server:
-				baseDir: "#{DIST}"
+			proxy: "localhost:#{CONFIG.port.static}"
 			ports:
-				min: CONFIG.PORT
-				max: CONFIG.PORT
+				min: CONFIG.port.browserSync
+				max: CONFIG.port.browserSync
 			browser: [
 				# 'opera'
 				# 'safari'
@@ -422,7 +419,8 @@ tasks =
 				scroll: true
 				location: true
 
-		browsersync.init app, config, next
+		server.start ->
+			browsersync.init app, config, next
 
 
 
@@ -498,11 +496,11 @@ g.task 'default', ->
 	# Tasks
 	args = ['clean']
 
-	args.push 'pngsprite' if CONFIG.PNGSPRITE
-	args.push 'grunt-svg' if CONFIG.SVGSPRITE
-	args.push 'grunt-font' if CONFIG.ICONFONT
-	args.push 'retinasprite1' if CONFIG.RETINASPRITE
-	args.push 'retinasprite2' if CONFIG.RETINASPRITE
+	args.push 'pngsprite' if CONFIG.tools.spritePng
+	args.push 'grunt-svg' if CONFIG.tools.spriteSvg
+	args.push 'grunt-font' if CONFIG.tools.iconfont
+	args.push 'retinasprite1' if CONFIG.tools.spriteRetina
+	args.push 'retinasprite2' if CONFIG.tools.spriteRetina
 
 	args.push 'img'
 	args.push 'data'
@@ -536,12 +534,10 @@ g.task 'deploy', do ->
 
 		# Simple heroku deploy
 		# "git push heroku master"
-
+		
 	]
 
-g.task 'auth', $.shell.task [
-	"curl -i https://auth.selcdn.ru/ -H 'X-Auth-User:#{SELECTEL.USER}' -H 'X-Auth-Key:#{SELECTEL.PASS}'"
-]
+g.task 'auth', $.shell.task [""]
 
 
 ### TODO:
