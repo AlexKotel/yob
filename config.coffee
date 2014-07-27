@@ -1,7 +1,7 @@
 module.exports = 
 
-	src: './src'
-	dist: './dist'
+	src: 'src'
+	dist: 'dist'
 
 	port:
 		static: 8000
@@ -19,3 +19,6 @@ module.exports =
 		HOST: 'https://xxx.selcdn.ru/xxx'
 		TOKEN: 'xxx'
 		ARCHIVE: 'dist.tar.gz'
+
+	extraCopy:
+		'src/meta/favicon.ico': 'dist/favicon.ico'

@@ -27,8 +27,6 @@ q = require 'q'
 # Config
 # ====================================================================
 TIMESTAMP = Date.now()
-STYLUS_DATA = {}
-JADE_DATA = {}
 PROD = argv.prod
 DEV = !argv.prod
 DIST = CONFIG.dist
@@ -66,7 +64,7 @@ paths =
 
 	appStyles:
 		dest: "#{DIST}/css"
-		main: "#{SRC}/styles/__app.styl"
+		main: "#{SRC}/styles/app.styl"
 		cwd: "#{SRC}/styles"
 		src: [
 			"#{SRC}/styles/**/*.styl"
@@ -138,10 +136,6 @@ tasks =
 			# Distribution
 			"#{DIST}"
 
-			# Underscore template results
-			"#{SRC}/jade/base/root.jade"
-			"#{SRC}/styles/app.styl"
-
 			# Iconfont
 			"#{SRC}/assets/font/iconfont-*.{woff,ttf,eot,svg}"
 			"#{SRC}/styles/tools/iconfont.styl"
@@ -204,14 +198,8 @@ tasks =
 
 	appStyles: ->
 
-		STYLUS_DATA.retinaSpriteUrl = "../assets/img/sprite-#{TIMESTAMP}@2x.png"
-		STYLUS_DATA.retinaSpriteWidth = sizeOf("src/assets/img/sprite-#{TIMESTAMP}@2x.png").width
-		STYLUS_DATA.retinaSpriteHeight = sizeOf("src/assets/img/sprite-#{TIMESTAMP}@2x.png").height
 
 		stream = g.src paths.appStyles.main
-			.pipe $.rename('app.styl')
-			.pipe $.template STYLUS_DATA
-			.pipe g.dest(paths.appStyles.cwd)
 			.pipe $.plumber()
 			.pipe $.stylus()
 			.pipe $.autoprefixer()
@@ -220,19 +208,12 @@ tasks =
 
 	inject: ->
 
-		injector = "#{SRC}/jade/base/__root.jade"
-
-		suffix = if PROD then "?#{Date.now()}" else ''
+		injector = "#{SRC}/jade/base/root.jade"
 
 		config =
 			addRootSlash: false
-			startag: '| <!-- inject:{ext} -->'
-			endtag:  '| <!-- endinject -->'
 			ignorePath: "/dist/"
-			transform: (filepath) ->
-				switch helpers.getExtension(filepath)
-					when 'css' then return "link(href='#{filepath}' rel='stylesheet')"
-					when 'js' then return "script(src='#{filepath}')"
+					
 
 		jsStream = ->
 			stream = streamqueue(objectMode: true)
@@ -258,7 +239,6 @@ tasks =
 
 		stream = g.src injector
 			.pipe $.inject(injectStream(), config)
-			.pipe $.rename('root.jade')
 			.pipe g.dest("#{SRC}/jade/base")
 
 	pages: (onlyChanged) ->
@@ -270,7 +250,7 @@ tasks =
 
 		stream = stream
 			.pipe $.plumber()
-			.pipe $.jade pretty: true, data: JADE_DATA
+			.pipe $.jade pretty: true
 			.pipe g.dest paths.pages.dest
 
 	views: (onlyChanged) ->
@@ -282,7 +262,7 @@ tasks =
 
 		stream = stream
 			.pipe $.plumber()
-			.pipe $.jade pretty: true, data: JADE_DATA
+			.pipe $.jade pretty: true
 			.pipe g.dest paths.views.dest
 
 	img: ->
@@ -386,9 +366,7 @@ tasks =
 		stream.img
 			.pipe g.dest paths.img.cwd
 
-	server: (next) ->
-
-		server = require './server/server'
+	server: ->
 
 		app = [
 			"#{DIST}/*.html"
@@ -402,7 +380,6 @@ tasks =
 		]
 
 		config =
-			reloadDelay: 200
 			proxy: "localhost:#{CONFIG.port.static}"
 			ports:
 				min: CONFIG.port.browserSync
@@ -419,8 +396,8 @@ tasks =
 				scroll: true
 				location: true
 
-		server.start ->
-			browsersync.init app, config, next
+		require './server/server'
+		browsersync.init app, config
 
 
 
@@ -467,11 +444,12 @@ g.task 'watch', ->
 
 	# Scripts
 	g.watch paths.appScripts.src, (e) ->
-		if e.type is 'added'
-			tasks.inject()
 
 		if e.type is 'changed'
 			tasks.appScripts(true)
+
+		if e.type is 'added' or e.type is 'deleted'
+			tasks.inject()
 
 	# Jade
 	g.watch paths.views.src
@@ -527,12 +505,12 @@ g.task 'deploy', do ->
 		# "tar czvf #{SELECTEL.ARCHIVE} #{DIST}"
 		# "curl -i -X PUT '#{SELECTEL.HOST}/?extract-archive=tar.gz' -H 'X-Auth-Token: #{SELECTEL.TOKEN}' -T '#{SELECTEL.ARCHIVE}'"
 
-		# Simple git deploy
-		# "git add ."
-		# "git commit -m 'New build'"
-		# "git push origin master"
+		# Git deploy
+		"git add -A"
+		"git commit -m 'New build'"
+		"git push origin master"
 
-		# Simple heroku deploy
+		# Heroku deploy
 		# "git push heroku master"
 		
 	]
@@ -560,7 +538,7 @@ g.task 'auth', $.shell.task [""]
 [ ] Generate png/retina sprite variables for stylus
 [ ] Sync removing files from src to dist
 [ ] Add browserify support
-[ ] Add ./server + proxy support
+[x] Add ./server + proxy support
 [ ] Add task 'extra copy'
 [ ] Feel difference between 'browserify on change' and 'watchify'
 [ ] Configure iconfont

@@ -1,3 +1,5 @@
+console.log 'App started'
+
 $.ajax
 	type: 'GET'
 	url: '/test'

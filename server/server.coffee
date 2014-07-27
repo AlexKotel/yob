@@ -7,9 +7,4 @@ app.get '/test', (req, res) ->
 	res.send('Hello')
 
 app.use express.static CONFIG.dist
-
-module.exports =
-
-	start: (cb) ->
-		app.listen CONFIG.port.static, ->
-			cb?.call()
+app.listen CONFIG.port.static

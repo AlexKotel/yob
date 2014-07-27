@@ -45,12 +45,6 @@
 		"gulp-autoprefixer": "",
 		"gulp-load-plugins": "",
 
-		"watchify": "",
-		"coffeeify": "",
-		"browserify": "",
-		"debowerify": "",
-		"browserify-shim": "",
-
 		"q": "",
 		"lodash": "",
 		"optimist": "",
@@ -61,22 +55,6 @@
 		"coffee-script": "",
 		"vinyl-source-stream": ""
 
-	},
-
-	"browser": {
-		"jquery": "./bower_components/jquery/dist/jquery.js",
-		"angular": "./bower_components/angular/angular.js"
-	},
-
-	"browserify-shim": {
-		"angular": "angular"
-	},
-
-	"browserify": {
-		"transform": [
-			"coffeeify",
-			"browserify-shim"
-		]
 	}
 
 }
