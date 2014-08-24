@@ -38,8 +38,8 @@
 		"gulp-imagemin": "",
 		"gulp-sourcemaps": "",
 		"gulp-ng-annotate": "",
+		"gulp.spritesmith": "",
 		"gulp-autoprefixer": "",
-		"gulp-load-plugins": "",
 
 		"rimraf": "",
 		"lodash": "",

@@ -18,6 +18,8 @@ module.exports = ->
 	gulp.watch paths.font.src, ['font']
 	gulp.watch paths.stylesApp.src, ['styles-app']
 
+	gulp.watch ["#{paths.src}/tools/sprite-png/src/*.png"], ['sprite-png']
+
 	gulp.watch paths.scriptsApp.src
 		.on 'change', (e) ->
 			if e.type in ['changed']

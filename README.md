@@ -1,6 +1,6 @@
 - [ ] Sync removing files from src to dist
 - [ ] Add iconfont
-- [ ] Add sprite-png
+- [ ] Add sprite-retina
 - [ ] Add sprite-svg
 - [ ] Add autoinject
 - [ ] Add browserify

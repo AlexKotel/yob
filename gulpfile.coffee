@@ -10,9 +10,7 @@ gulp.task 'default', ->
 
 		'clean'
 
-		# 'iconfont'
-		# 'sprite-png'
-		# 'sprite-svg'
+		'sprite-png'
 
 		[
 			'img'

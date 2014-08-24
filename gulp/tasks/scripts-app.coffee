@@ -23,10 +23,10 @@ module.exports = (onlyChanged = false) ->
 
 	stream = stream
 		.pipe $.plumber()
-		.pipe $.if !argv.prod, $.sourcemaps.init()
+		.pipe $.if(!argv.prod, $.sourcemaps.init())
 		.pipe $.coffee()
-		.pipe $.if argv.prod, $.concat('app.concated.js')
-		.pipe $.if argv.prod, $.ngAnnotate()
-		.pipe $.if argv.prod, $.uglify(mangle: false)
-		.pipe $.if !argv.prod, $.sourcemaps.write()
-		.pipe $.if !argv.prod, gulp.dest(paths.scriptsApp.dest)
+		.pipe $.if(argv.prod, $.concat('app.concated.js'))
+		.pipe $.if(argv.prod, $.ngAnnotate())
+		.pipe $.if(argv.prod, $.uglify(mangle: false))
+		.pipe $.if(!argv.prod, $.sourcemaps.write())
+		.pipe $.if(!argv.prod, gulp.dest(paths.scriptsApp.dest))
