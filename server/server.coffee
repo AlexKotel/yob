@@ -9,11 +9,10 @@ app.use favicon("#{config.dist}/favicon.ico")
 # SPA
 app.use('/js', express.static("#{config.dist}/js"))
 app.use('/css', express.static("#{config.dist}/css"))
-app.use('/copy', express.static("#{config.dist}/copy"))
+app.use('/img', express.static("#{config.dist}/img"))
+app.use('/font', express.static("#{config.dist}/font"))
 app.use('/views', express.static("#{config.dist}/views"))
-app.use('/assets', express.static("#{config.dist}/assets"))
-app.all '/*', (req, res) ->
-	res.sendfile "#{config.dist}/index.html"
+app.all '/*', (req, res) -> res.sendfile "#{config.dist}/index.html"
 
 
 # NOT SPA

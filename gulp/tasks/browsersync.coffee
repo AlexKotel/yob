@@ -17,7 +17,7 @@ $ =
 
 module.exports = ->
 
-	app = [
+	files = [
 		"#{paths.pages.dest}/*.html"
 		"#{paths.views.dest}/**/*.html"
 		"#{paths.scriptsApp.dest}/**/*.js"
@@ -43,4 +43,4 @@ module.exports = ->
 			scroll: true
 			location: true
 
-	browsersync.init app, config
+	browsersync.init files, config

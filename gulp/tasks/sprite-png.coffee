@@ -8,6 +8,5 @@ $ =
 
 
 module.exports = (cb) ->
-	console.log 'Sprite-png not implemented'
+	console.log 'Not implemented'
 	cb()
-

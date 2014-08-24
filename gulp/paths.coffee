@@ -54,27 +54,23 @@ module.exports =
 		src: ["#{config.src}/jade/views/**/*.jade"]
 
 
+	jade:
+		injector: "#{config.src}/jade/base/root.jade"
+
+
 	img:
-		dest: "#{config.dist}/assets/img"
-		cwd: "#{config.src}/assets/img"
-		src: ["#{config.src}/assets/img/**/*.{png,jpg,jpeg,gif,svg}"]
+		dest: "#{config.dist}/img"
+		cwd: "#{config.src}/img"
+		src: ["#{config.src}/img/**/*.{png,jpg,jpeg,gif,svg}"]
 
 
 	font:
-		dest: "#{config.dist}/assets/font"
-		cwd: "#{config.src}/assets/font"
-		src: ["#{config.src}/assets/font/**/*.{woff,ttf,eot,svg}"]
+		dest: "#{config.dist}/font"
+		cwd: "#{config.src}/font"
+		src: ["#{config.src}/font/**/*.{woff,ttf,eot,svg}"]
 
-
-	jade:
-		injector: "#{config.src}/jade/base/root.jade"
-		src: [
-			"#{config.src}/jade/inc/**/*.jade"
-			"#{config.src}/jade/base/**/*.jade"
-			"!#{config.src}/jade/base/root.jade"
-		]
 
 	copy: [
-		src: "#{config.src}/copy/favicon.ico"
+		src: "#{config.src}/favicon.ico"
 		dest: "#{config.dist}"
 	]

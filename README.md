@@ -1,9 +1,9 @@
+- [ ] Sync removing files from src to dist
 - [ ] Add iconfont
 - [ ] Add sprite-png
 - [ ] Add sprite-svg
-- [ ] Add browserify
 - [ ] Add autoinject
-- [ ] Sync removing files from src to dist
+- [ ] Add browserify
 - [ ] Feel difference between 'browserify on change' and 'watchify'
 - [ ] Configure $.imagemin for .png
 - [ ] Configure $.imagemin for .svg

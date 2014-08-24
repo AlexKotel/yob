@@ -6,17 +6,13 @@ fs = require('fs')
 
 gulp.task 'default', ->
 
-	require('./server/server')
-
 	sequence.apply @, [
 
 		'clean'
 
-		[
-			'iconfont'
-			'sprite-png'
-			'sprite-svg'
-		]
+		# 'iconfont'
+		# 'sprite-png'
+		# 'sprite-svg'
 
 		[
 			'img'
@@ -32,6 +28,7 @@ gulp.task 'default', ->
 		[
 			'watch'
 			'browsersync'
+			'server'
 		]
 
 	]

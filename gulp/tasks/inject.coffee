@@ -21,7 +21,7 @@ module.exports = (onWatch = false) ->
 
 	config =
 		addRootSlash: true
-		ignorePath: "/dist/"
+		ignorePath: "/#{paths.dist}/"
 
 	jsStream = ->
 		stream = streamqueue(objectMode: true)

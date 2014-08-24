@@ -8,6 +8,5 @@ $ =
 
 
 module.exports = (cb) ->
-	console.log 'Sprite-svg not implemented'
+	console.log 'Not implemented'
 	cb()
-
