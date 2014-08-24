@@ -1,9 +1,14 @@
 {
 	"name": "app",
+
 	"version": "0.0.1",
+
 	"dependencies": {
+
 		"lodash": "",
 		"jquery": "1",
-		"bootstrap": ""
+		"bootstrap": "3"
+
 	}
+
 }

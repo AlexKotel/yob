@@ -1,59 +1,53 @@
 {
 
-	"name":  "yob",
+	"name":  "app",
 
 	"version": "0.0.1",
 
 	"dependencies": {
-		"express": ""
+
+		"express": "",
+		"mongoose": "",
+		"socket.io": "",
+		"coffee-script": "",
+		"serve-favicon": ""
+
 	},
 
 	"devDependencies": {
 
-		"grunt": "",
-		"grunt-svgmin": "",
-		"grunt-webfont": "",
-		"grunt-svg-sprite": "",
-		"grunt-contrib-copy": "",
-		"grunt-contrib-clean": "",
-		"load-grunt-tasks": "",
-
 		"gulp": "",
 		"gulp-if": "",
-		"gulp-open": "",
+		"gulp-jade": "",
 		"gulp-util": "",
-		"gulp-grunt": "",
 		"gulp-clean": "",
-		"gulp-ngmin": "",
 		"gulp-shell": "",
 		"gulp-concat": "",
 		"gulp-rename": "",
+		"gulp-rimraf": "",
+		"gulp-ignore": "",
 		"gulp-filter": "",
 		"gulp-uglify": "",
-		"gulp-flatten": "",
-		"gulp-template": "",
-		"gulp-changed": "",
-		"gulp-jade": "",
 		"gulp-coffee": "",
 		"gulp-stylus": "",
 		"gulp-inject": "",
-		"gulp-plumber": "",
 		"gulp-cssmin": "",
+		"gulp-changed": "",
+		"gulp-plumber": "",
+		"gulp-template": "",
 		"gulp-imagemin": "",
 		"gulp-sourcemaps": "",
-		"gulp.spritesmith": "",
+		"gulp-ng-annotate": "",
 		"gulp-autoprefixer": "",
 		"gulp-load-plugins": "",
 
-		"q": "",
+		"rimraf": "",
 		"lodash": "",
 		"optimist": "",
-		"image-size": "",
 		"browser-sync": "",
 		"streamqueue": "",
 		"run-sequence": "",
-		"coffee-script": "",
-		"vinyl-source-stream": ""
+		"coffee-script": ""
 
 	}
 

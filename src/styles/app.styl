@@ -1,11 +1,3 @@
-// @import 'tools/iconfont'
-// @import 'tools/sprite-svg'
-// @import 'tools/sprite-png'
-// @import 'tools/sprite-retina'
-
-
-@import 'base/reset'
-
 @keyframes pulse
 	0%,100%
 		transform translateY(20px)
@@ -14,12 +6,19 @@
 
 $retina = 'only screen and (-webkit-min-device-pixel-ratio: 2)'
 
+
+*
+	margin 0
+	padding 0px
+	box-sizing border-box
+
 body
 	color #ccc
-	background url('../assets/img/bg/bg.png')
+	font-family Tahoma
+	background url('/assets/img/bg/bg.png')
 
 	@media $retina
-		background url('../assets/img/bg/bg@2x.png')
+		background url('/assets/img/bg/bg@2x.png')
 		background-size 180px 180px
 
 img

@@ -1,1 +1,1 @@
-console.log 777111
+console.log 'App started'
