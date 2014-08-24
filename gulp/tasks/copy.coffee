@@ -1,5 +1,4 @@
 paths = require('../paths')
-argv = require('optimist').argv
 gulp = require('gulp')
 
 $ =
@@ -9,8 +8,8 @@ $ =
 module.exports = (cb) ->
 
 	for glob in paths.copy
-		gulp.src glob.src
-			.pipe $.changed glob.dest
-			.pipe gulp.dest glob.dest
+		gulp.src(glob.src)
+			.pipe $.changed(glob.dest)
+			.pipe gulp.dest(glob.dest)
 
 	cb()

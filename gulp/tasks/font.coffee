@@ -1,5 +1,4 @@
 paths = require('../paths')
-argv = require('optimist').argv
 gulp = require('gulp')
 
 $ =
@@ -8,6 +7,6 @@ $ =
 
 module.exports = ->
 
-	stream = gulp.src paths.font.src
-		.pipe $.changed paths.font.dest
-		.pipe gulp.dest paths.font.dest
+	stream = gulp.src(paths.font.src)
+		.pipe $.changed(paths.font.dest)
+		.pipe gulp.dest(paths.font.dest)

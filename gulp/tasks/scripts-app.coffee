@@ -15,11 +15,11 @@ $ =
 
 module.exports = (onlyChanged = false) ->
 
-	stream = gulp.src paths.scriptsApp.src
+	stream = gulp.src(paths.scriptsApp.src)
 
 	if onlyChanged
 		stream = stream
-			.pipe $.changed paths.scriptsApp.dest, extension: '.js'
+			.pipe $.changed(paths.scriptsApp.dest, extension: '.js')
 
 	stream = stream
 		.pipe $.plumber()

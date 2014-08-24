@@ -10,7 +10,7 @@ $ =
 
 module.exports = ->
 
-	stream = gulp.src paths.img.src
-		.pipe $.changed paths.img.dest
-		.pipe $.if argv.prod, $.imagemin()
-		.pipe gulp.dest paths.img.dest
+	stream = gulp.src(paths.img.src)
+		.pipe $.changed(paths.img.dest)
+		.pipe $.if(argv.prod, $.imagemin())
+		.pipe gulp.dest(paths.img.dest)

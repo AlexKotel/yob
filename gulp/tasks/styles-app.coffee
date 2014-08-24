@@ -13,7 +13,7 @@ $ =
 
 module.exports = ->
 
-	stream = gulp.src paths.stylesApp.main
+	stream = gulp.src(paths.stylesApp.main)
 		.pipe $.plumber()
 		.pipe $.if(!argv.prod, $.sourcemaps.init())
 		.pipe $.stylus()

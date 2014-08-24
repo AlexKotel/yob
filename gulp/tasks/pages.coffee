@@ -1,5 +1,4 @@
 paths = require('../paths')
-argv = require('optimist').argv
 gulp = require('gulp')
 
 $ =
@@ -11,12 +10,12 @@ $ =
 
 module.exports = (onlyChanged = false) ->
 
-	stream = gulp.src paths.pages.src
+	stream = gulp.src(paths.pages.src)
 
 	if onlyChanged
-		stream = stream.pipe $.changed paths.pages.dest, extension: '.html'
+		stream = stream.pipe $.changed(paths.pages.dest, extension: '.html')
 
 	stream = stream
 		.pipe $.plumber()
 		.pipe $.jade(pretty: true)
-		.pipe gulp.dest paths.pages.dest
+		.pipe gulp.dest(paths.pages.dest)

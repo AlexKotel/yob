@@ -19,7 +19,7 @@ module.exports = ->
 		cssOpts:
 			cssClass: (item) -> ".i.i-#{item.name}"
 
-	stream = gulp.src "#{paths.src}/tools/sprite-png/src/*.png"
+	stream = gulp.src("#{paths.src}/tools/sprite-png/src/*.png")
 		.pipe $.if(argv.prod, $.imagemin())
 		.pipe gulp.dest("#{paths.src}/tools/sprite-png/optimized")
 		.pipe $.spritesmith(config)

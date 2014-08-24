@@ -1,7 +1,5 @@
 config = require('../../config')
 paths = require('../paths')
-argv = require('optimist').argv
-gulp = require('gulp')
 browsersync = require('browser-sync')
 
 
@@ -33,5 +31,5 @@ module.exports = (cb) ->
 			scroll: true
 			location: true
 
-	browsersync.init files, config
+	browsersync.init(files, config)
 	cb()

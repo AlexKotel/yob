@@ -10,7 +10,7 @@ $ =
 
 module.exports = ->
 
-	stream = gulp.src paths.scriptsDep.src
+	stream = gulp.src(paths.scriptsDep.src)
 		.pipe $.if(argv.prod, $.concat('vendor.min.css'))
 		.pipe $.if(argv.prod, $.uglify())
 		.pipe $.if(!argv.prod, gulp.dest(paths.scriptsDep.dest))

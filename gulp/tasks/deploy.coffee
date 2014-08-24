@@ -1,6 +1,7 @@
-shell = require('gulp-shell')
+$ =
+	shell: require('gulp-shell')
 
-module.exports = shell.task([
+module.exports = $.shell.task([
 
 	"git add -A"
 	"git commit -m 'New build'"
