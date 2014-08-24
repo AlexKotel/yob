@@ -4,18 +4,8 @@ argv = require('optimist').argv
 gulp = require('gulp')
 browsersync = require('browser-sync')
 
-$ =
-	if: require('gulp-if')
-	coffee: require('gulp-coffee')
-	concat: require('gulp-concat')
-	uglify: require('gulp-uglify')
-	plumber: require('gulp-plumber')
-	changed: require('gulp-changed')
-	sourcemaps: require('gulp-sourcemaps')
-	ngAnnotate: require('gulp-ng-annotate')
 
-
-module.exports = ->
+module.exports = (cb) ->
 
 	files = [
 		"#{paths.pages.dest}/*.html"
@@ -44,3 +34,4 @@ module.exports = ->
 			location: true
 
 	browsersync.init files, config
+	cb()
