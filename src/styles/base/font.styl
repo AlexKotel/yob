@@ -1,0 +1,72 @@
+// Custom fonts
+// ===================================================
+@font-face
+	font-family 'Rouble'
+	src url('/font/rouble.eot')
+	src url('/font/rouble.eot?#iefix') format('embedded-opentype'), url('/font/rouble.woff') format('woff'), url('/font/rouble.ttf') format('truetype'), url('/font/rouble.svg#museo_sans_cyrillic900_italic') format('svg')
+	font-weight 900
+	font-style normal
+
+.rub
+	display inline
+	font-family 'Rouble'
+	&:before
+		content 'p'
+
+
+// Font sizes
+// ===================================================
+for i in $font-sizes
+	.f-{i}
+		font-size unit(i, 'px')
+
+
+// Weight
+// ===================================================
+.f-xs
+	font-weight 100
+
+.f-s
+	font-weight 300
+
+.f-m
+	font-weight 500
+
+.f-l
+	font-weight 700
+
+.f-xl
+	font-weight 900
+
+
+// Font colors
+// ===================================================
+.f-white
+	color #fff
+
+.f-black
+	color #000
+
+.f-red
+	color $red
+
+.f-blue
+	color $blue
+
+.f-green
+	color $green
+
+
+// Decor
+// ===================================================
+.f-clean
+	text-decoration none
+
+.f-under
+	text-decoration underline
+
+.f-upp
+	text-transform uppercase
+
+.f-low
+	text-transform lowercase

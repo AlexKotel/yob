@@ -1,0 +1,29 @@
+hover-color(color)
+
+	&:hover
+		color color
+
+
+active-color(color)
+
+	&:active
+		color color
+
+
+vert-space(space)
+	& + &
+		margin-top space
+
+
+hor-space(space)
+	& + &
+		margin-left space
+
+
+size(x, y = x)
+	width unit(x, 'px')
+	height unit(y, 'px')
+
+
+debug()
+	background rgba(red, .3)

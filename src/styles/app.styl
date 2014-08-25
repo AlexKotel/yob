@@ -1,27 +1,24 @@
+@import 'config'
 @import 'tools/sprite-png'
 
-@keyframes pulse
-	0%,100%
-		transform translateY(20px)
-	50%
-		transform translateY(-20px)
+@import 'helpers/mixins'
+@import 'helpers/helpers'
 
-$retina = 'only screen and (-webkit-min-device-pixel-ratio: 2)'
+@import 'layout/grid'
+@import 'layout/common'
 
+@import 'base/reset'
+@import 'base/font'
+@import 'base/icon'
+@import 'base/skin'
 
-*
-	margin 0
-	padding 0px
-	box-sizing border-box
+@import 'modules/btn'
+@import 'modules/header'
+@import 'modules/footer'
 
 body
 	color #ccc
-	font-family Tahoma
 	background url('/img/bg/bg.png')
-
-	@media $retina
-		background url('/img/bg/bg@2x.png')
-		background-size 180px 180px
 
 img
 	position fixed
