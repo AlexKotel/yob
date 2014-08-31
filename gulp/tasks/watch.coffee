@@ -43,13 +43,15 @@ module.exports = ->
 
 
 	# Jade
-	gulp.watch(paths.views.src).on 'change', -> tasks.views(true)
-	gulp.watch(paths.pages.src).on 'change', -> tasks.pages(true)
+	gulp.watch("#{paths.views.cwd}/**/*").on 'change', -> tasks.views(true)
+	gulp.watch("#{paths.pages.cwd}/**/*").on 'change', -> tasks.pages(true)
 	gulp.watch(paths.jade.src).on 'change', -> tasks.pages()
 
 	# Sync remove
 	syncFiles(paths.scriptsApp.cwd, paths.scriptsApp.dest, '.coffee', '.js', tasks.autoinject)
 	syncFiles(paths.pages.cwd, paths.pages.dest, '.jade', '.html')
 	syncFiles(paths.views.cwd, paths.views.dest, '.jade', '.html')
-	syncFiles(paths.font.cwd, paths.font.dest)
 	syncFiles(paths.img.cwd, paths.img.dest)
+	syncFiles(paths.font.cwd, paths.font.dest)
+
+

@@ -1,14 +1,17 @@
 config = require('../config')
 
+SRC = config.src
+DIST = config.dist
+
 module.exports =
 
 
-	src: config.src
-	dist: config.dist
+	src: SRC
+	dist: DIST
 
 
 	scriptsDep:
-		dest: "#{config.dist}/js/dep"
+		dest: "#{DIST}/js/dep"
 		src: [
 			'bower_components/jquery/dist/jquery.js'
 			'bower_components/lodash/dist/lodash.js'
@@ -17,61 +20,61 @@ module.exports =
 
 
 	stylesDep:
-		dest: "#{config.dist}/css/dep"
+		dest: "#{DIST}/css/dep"
 		src: [
 			'bower_components/bootstrap/dist/css/bootstrap.css'
 		]
 
 
 	scriptsApp:
-		cwd: "#{config.src}/scripts"
-		dest: "#{config.dist}/js/app"
-		main: "#{config.src}/scripts/app.coffee"
+		cwd: "#{SRC}/scripts"
+		dest: "#{DIST}/js/app"
+		main: "#{SRC}/scripts/app.coffee"
 		src: [
-			"#{config.src}/scripts/app.coffee"
-			"#{config.src}/scripts/**/*.coffee"
+			"#{SRC}/scripts/app.coffee"
+			"#{SRC}/scripts/**/*.coffee"
 		]
 
 
 	stylesApp:
-		cwd: "#{config.src}/styles"
-		dest: "#{config.dist}/css/app"
-		main: "#{config.src}/styles/app.styl"
+		cwd: "#{SRC}/styles"
+		dest: "#{DIST}/css/app"
+		main: "#{SRC}/styles/app.styl"
 		src: [
-			"#{config.src}/styles/**/*.styl"
+			"#{SRC}/styles/**/*.styl"
 		]
 
 
 	pages:
-		cwd: "#{config.src}/jade/pages"
-		dest: "#{config.dist}"
-		src: ["#{config.src}/jade/pages/**/*.jade"]
+		cwd: "#{SRC}/jade/pages"
+		dest: "#{DIST}"
+		src: ["#{SRC}/jade/pages/**/*.jade"]
 
 
 	views:
-		dest: "#{config.dist}/views"
-		cwd: "#{config.src}/views"
-		src: ["#{config.src}/jade/views/**/*.jade"]
+		cwd: "#{SRC}/jade/views"
+		dest: "#{DIST}/views"
+		src: ["#{SRC}/jade/views/**/*.jade"]
 
 
 	jade:
-		injector: "#{config.src}/jade/base/root.jade"
-		src: ["#{config.src}/jade/base/**/*.jade"]
+		injector: "#{SRC}/jade/base/root.jade"
+		src: ["#{SRC}/jade/base/**/*.jade"]
 
 
 	img:
-		dest: "#{config.dist}/img"
-		cwd: "#{config.src}/img"
-		src: ["#{config.src}/img/**/*.{png,jpg,jpeg,gif,svg}"]
+		dest: "#{DIST}/img"
+		cwd: "#{SRC}/img"
+		src: ["#{SRC}/img/**/*.{png,jpg,jpeg,gif,svg}"]
 
 
 	font:
-		dest: "#{config.dist}/font"
-		cwd: "#{config.src}/font"
-		src: ["#{config.src}/font/**/*.{woff,ttf,eot,svg}"]
+		dest: "#{DIST}/font"
+		cwd: "#{SRC}/font"
+		src: ["#{SRC}/font/**/*.{woff,ttf,eot,svg}"]
 
 
 	copy: [
-		src: "#{config.src}/favicon.ico"
-		dest: "#{config.dist}"
+		src: "#{SRC}/favicon.ico"
+		dest: "#{DIST}"
 	]

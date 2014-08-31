@@ -9,6 +9,8 @@ $ =
 
 module.exports = (fromPath, toPath, fromExt, toExt, cb = ->) ->
 
+	console.log
+
 	gulp.watch("#{fromPath}/**/*").on 'change', (e) ->
 
 		if e.type in ['deleted']
