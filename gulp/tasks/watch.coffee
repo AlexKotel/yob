@@ -17,32 +17,37 @@ tasks =
 
 module.exports = ->
 
-	# gulp.watch paths.img.src, ['img']
-	# gulp.watch paths.font.src, ['font']
-	# gulp.watch paths.stylesApp.src, ['styles-app']
+	gulp.watch paths.img.src, ['img']
 
-	# gulp.watch ["#{paths.src}/tools/sprite-png/src/*.png"], ['sprite-png']
+	gulp.watch paths.font.src, ['font']
+	
+	gulp.watch paths.stylesApp.src, ['styles-app']
+
+	gulp.watch ["#{paths.src}/tools/sprite-png/src/*.png"], ['sprite-png']
 
 
-	# gulp.watch ["#{paths.scriptsApp.cwd}/**/*"]
-	# 	.on 'change', (e) ->
 
-	# 		if e.type in ['changed']
-	# 			tasks.scriptsApp(true)
+	gulp.watch paths.views.src
+		.on 'change', (e) ->
+			tasks.views(true)
 
-	# 		if e.type in ['added']
-	# 			tasks.scriptsApp(true).on 'end', tasks.autoinject
+	gulp.watch paths.pages.src
+		.on 'change', (e) ->
+			tasks.pages(true)
 
-	# gulp.watch paths.views.src
-	# 	.on 'change', (e) ->
-	# 		tasks.views(true)
+	gulp.watch paths.jade.src
+		.on 'change', ->
+			tasks.pages()
 
-	# gulp.watch paths.pages.src
-	# 	.on 'change', (e) ->
-	# 		tasks.pages(true)
 
-	# gulp.watch paths.jade.src
-	# 	.on 'change', ->
-	# 		tasks.pages()
+
+	gulp.watch ["#{paths.scriptsApp.cwd}/**/*"]
+		.on 'change', (e) ->
+
+			if e.type in ['changed']
+				tasks.scriptsApp(true)
+
+			if e.type in ['added']
+				tasks.scriptsApp(true).on 'end', tasks.autoinject
 
 	syncFiles(paths.scriptsApp.cwd, paths.scriptsApp.dest, '.coffee', '.js')
