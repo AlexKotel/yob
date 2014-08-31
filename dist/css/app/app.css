@@ -1,0 +1,23 @@
+.i.i-git {
+  background-image: url("/img/sprite.png");
+  background-position: 0px 0px;
+  width: 34px;
+  height: 30px;
+}
+body {
+  color: #ccc;
+  background: url("/img/bg/bg.png");
+}
+img {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 114px;
+  height: 257px;
+  margin-left: -57px;
+  margin-top: -128px;
+  -webkit-animation: pulse 2s infinite;
+          animation: pulse 2s infinite;
+}
+
+/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmNzcyIsIm5hbWVzIjpbXSwibWFwcGluZ3MiOiIiLCJzb3VyY2VzIjpbImFwcC5zdHlsIl0sInNvdXJjZXNDb250ZW50IjpbIkBpbXBvcnQgJ2NvbmZpZydcbkBpbXBvcnQgJ3Rvb2xzL3Nwcml0ZS1wbmcnXG5cblxuYm9keVxuXHRjb2xvciAjY2NjXG5cdGJhY2tncm91bmQgdXJsKCcvaW1nL2JnL2JnLnBuZycpXG5cbmltZ1xuXHRwb3NpdGlvbiBmaXhlZFxuXHR0b3AgNTAlXG5cdGxlZnQgNTAlXG5cdHdpZHRoIDExNHB4XG5cdGhlaWdodCAyNTdweFxuXHRtYXJnaW4tbGVmdCAtNTdweFxuXHRtYXJnaW4tdG9wIC0xMjhweFxuXHRhbmltYXRpb24gcHVsc2UgMnMgaW5maW5pdGUiXSwic291cmNlUm9vdCI6Ii9zb3VyY2UvIn0= */
