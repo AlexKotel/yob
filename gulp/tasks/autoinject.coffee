@@ -10,8 +10,6 @@ $ =
 
 module.exports = ->
 
-	console.log 77777777777
-
 
 	scriptsDep = for scriptPath in paths.scriptsDep.src
 		dest = paths.scriptsDep.dest

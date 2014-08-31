@@ -7,7 +7,7 @@ gulp = require('gulp')
 $ =
 	if: require('gulp-if')
 	rename: require('gulp-rename')
-	imagemin: require('gulp-imagemin')
+	# imagemin: require('gulp-imagemin')
 	spritesmith: require('gulp.spritesmith')
 
 
@@ -24,7 +24,7 @@ module.exports = ->
 			cssClass: (item) -> ".i.i-#{item.name}"
 
 	stream = gulp.src("#{paths.src}/tools/sprite-png/src/*.png")
-		.pipe $.if(argv.prod, $.imagemin())
+		# .pipe $.if(argv.prod, $.imagemin())
 		.pipe gulp.dest("#{paths.src}/tools/sprite-png/optimized")
 		.pipe $.spritesmith(config)
 

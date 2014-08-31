@@ -6,21 +6,17 @@ $ =
 	rename: require('gulp-rename')
 	rimraf: require('gulp-rimraf')
 
-tasks =
-	autoinject: require('../tasks/autoinject')
 
-module.exports = (fromPath, toPath, fromExt, toExt) ->
+module.exports = (fromPath, toPath, fromExt, toExt, cb = ->) ->
 
 	gulp.watch("#{fromPath}/**/*").on 'change', (e) ->
 
 		if e.type in ['deleted']
 
+			console.log 'Sync files...'
+
 			if fromExt isnt toExt
 				e.path = e.path.replace(fromExt, toExt)
-
-
-			console.log "from: #{fromPath}"
-			console.log "to: #{toPath}"
 
 			# IMPORTANT!
 			# fromPath must contain '/' on end
@@ -30,9 +26,7 @@ module.exports = (fromPath, toPath, fromExt, toExt) ->
 			pathToRemove = toPath + deletedFilePath
 
 			stream = gulp.src(pathToRemove, read: false)
-
-			stream.pipe $.rimraf()
-
-			stream.on 'end', -> tasks.autoinject()
+			stream.pipe($.rimraf())
+			stream.on('end', cb)
 
 

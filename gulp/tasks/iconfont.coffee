@@ -4,7 +4,7 @@ gulp = require('gulp')
 
 $ =
 	if: require('gulp-if')
-	imagemin: require('gulp-imagemin')
+	# imagemin: require('gulp-imagemin')
 
 
 module.exports = (cb) ->
