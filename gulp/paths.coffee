@@ -56,6 +56,7 @@ module.exports =
 
 	jade:
 		injector: "#{config.src}/jade/base/root.jade"
+		src: ["#{config.src}/jade/base/**/*.jade"]
 
 
 	img:

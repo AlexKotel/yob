@@ -2,6 +2,8 @@ paths = require('../paths')
 argv = require('optimist').argv
 gulp = require('gulp')
 
+
+
 $ =
 	if: require('gulp-if')
 	rename: require('gulp-rename')
@@ -10,6 +12,8 @@ $ =
 
 
 module.exports = ->
+
+	timestamp = Date.now()
 
 	config =
 		algorithm: 'binary-tree'
@@ -30,4 +34,3 @@ module.exports = ->
 
 	stream.img
 		.pipe gulp.dest(paths.img.cwd)
-
