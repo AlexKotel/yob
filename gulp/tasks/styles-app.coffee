@@ -13,11 +13,11 @@ $ =
 
 module.exports = ->
 
+	config = if argv.prod then {} else sourcemap: inline: true
+
 	stream = gulp.src(paths.stylesApp.main)
 		.pipe $.plumber()
-		.pipe $.if(!argv.prod, $.sourcemaps.init())
-		.pipe $.stylus()
+		.pipe $.stylus(config)
 		.pipe $.autoprefixer($.autoprefixer('ie 8'))
 		.pipe $.if(argv.prod, $.cssmin())
-		.pipe $.if(!argv.prod, $.sourcemaps.write())
 		.pipe $.if(!argv.prod, gulp.dest(paths.stylesApp.dest))

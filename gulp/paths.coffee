@@ -15,15 +15,12 @@ module.exports =
 		src: [
 			'bower_components/jquery/dist/jquery.js'
 			'bower_components/lodash/dist/lodash.js'
-			'bower_components/bootstrap/dist/js/bootstrap.js'
 		]
 
 
 	stylesDep:
 		dest: "#{DIST}/css/dep"
-		src: [
-			'bower_components/bootstrap/dist/css/bootstrap.css'
-		]
+		src: []
 
 
 	scriptsApp:
