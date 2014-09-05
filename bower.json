@@ -5,6 +5,7 @@
 
 	"dependencies": {
 
+		"async": "",
 		"lodash": "",
 		"jquery": "1",
 		"bootstrap": "3"
