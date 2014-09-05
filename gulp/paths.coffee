@@ -20,7 +20,9 @@ module.exports =
 
 	stylesDep:
 		dest: "#{DIST}/css/dep"
-		src: []
+		src: [
+			'bower_components/normalize-css/normalize.css'
+		]
 
 
 	scriptsApp:

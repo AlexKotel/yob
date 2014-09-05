@@ -1,9 +1,13 @@
 @import 'config'
 @import 'tools/sprite-png'
 
+@keyframes pulse
+	0%,100%
+		transform translateY(-20px)
+	50%
+		transform translateY(20px)
 
 body
-	color #ccc
 	background url('/img/bg/bg.png')
 
 img
