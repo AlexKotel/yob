@@ -61,24 +61,22 @@ app.directive 'ibvSelect', ($timeout) ->
 			scope.setLabel()
 
 		scope.setLabel = ->
-
 			model = scope.ngModel
-
 			if (typeof model is 'undefined') or (!model)
-
 				scope.label = scope.placeholder
-
 			else
-
 				for option in scope.options
 					if option[valField] is ngModelCtrl.$modelValue
-						scope.label = scope.getOptionName(option)
+						scope.label = scope.getOptionKey(option)
 
 		scope.selectVal = (option) ->
 			ngModelCtrl.$setViewValue(option[valField])
 
-		scope.getOptionName = (option) ->
+		scope.getOptionKey = (option) ->
 			option[keyField]
+
+		scope.getOptionSelected = (option) ->
+			return true if option[keyField] is scope.label
 
 
 # """
