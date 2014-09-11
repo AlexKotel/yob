@@ -10,4 +10,34 @@ block head
 
 block content
 
-	img(src="/img/content/gulp.png")
+	pre(ng-bind="app.user | json")
+
+	.row
+
+		.col-xs-6
+
+			.form
+
+				.form-group
+					ibv-select(
+						placeholder="Change name"
+						options="app.select.names"
+						ng-model="app.user.name"
+						key-field="key"
+						val-field="val"
+						)
+				.form-group
+					ibv-select(
+						placeholder="Change city"
+						options="app.select.cities"
+						ng-model="app.user.city"
+						key-field="key"
+						val-field="val"
+						)
+
+		.col-xs-6
+
+			.btn-group-vertical
+				a.btn.btn-success(ng-click="app.resetName()") Reset name
+				a.btn.btn-success(ng-click="app.resetCity()") Reset city
+				a.btn.btn-success(ng-click="app.addNames()") Add names

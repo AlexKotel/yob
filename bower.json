@@ -7,7 +7,9 @@
 
 		"lodash": "",
 		"jquery": "1",
-		"normalize-css": ""
+		"bootstrap": "3",
+		"normalize-css": "",
+		"angular": ""
 
 	}
 

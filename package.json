@@ -1,51 +1,57 @@
 {
 
-	"name":  "app",
-
+	"name": "app",
 	"version": "0.0.1",
 
 	"dependencies": {
 
-		"express": "",
-		"mongoose": "",
-		"socket.io": "",
-		"coffee-script": "",
-		"serve-favicon": ""
+		"express": "4",
+		"mongoose": "*",
+		"socket.io": "*",
+
+		"morgan": "*",
+		"body-parser": "*",
+		"cookie-parser": "*",
+		"method-override": "*",
+		"connect-mongo": "*",
+		"connect-redis": "*",
+		"serve-favicon": "*",
+		"express-session": "*",
+		"coffee-script": "*"
 
 	},
 
 	"devDependencies": {
 
-		"gulp": "",
-		"gulp-if": "",
-		"gulp-jade": "",
-		"gulp-util": "",
-		"gulp-shell": "",
-		"gulp-concat": "",
-		"gulp-rename": "",
-		"gulp-rimraf": "",
-		"gulp-ignore": "",
-		"gulp-filter": "",
-		"gulp-uglify": "",
-		"gulp-coffee": "",
-		"gulp-stylus": "",
-		"gulp-inject": "",
-		"gulp-cssmin": "",
-		"gulp-changed": "",
-		"gulp-plumber": "",
-		"gulp-template": "",
-		"gulp-sourcemaps": "",
-		"gulp-ng-annotate": "",
-		"gulp.spritesmith": "",
-		"gulp-autoprefixer": "",
-
-		"rimraf": "",
-		"lodash": "",
-		"optimist": "",
-		"browser-sync": "",
-		"streamqueue": "",
-		"run-sequence": "",
-		"coffee-script": ""
+		"gulp": "*",
+		"gulp-if": "*",
+		"gulp-jade": "*",
+		"gulp-util": "*",
+		"gulp-shell": "*",
+		"gulp-concat": "*",
+		"gulp-rename": "*",
+		"gulp-rimraf": "*",
+		"gulp-ignore": "*",
+		"gulp-filter": "*",
+		"gulp-uglify": "*",
+		"gulp-coffee": "*",
+		"gulp-stylus": "*",
+		"gulp-inject": "*",
+		"gulp-cssmin": "*",
+		"gulp-changed": "*",
+		"gulp-plumber": "*",
+		"gulp-template": "*",
+		"gulp-sourcemaps": "*",
+		"gulp-ng-annotate": "*",
+		"gulp.spritesmith": "*",
+		"gulp-autoprefixer": "*",
+		"rimraf": "*",
+		"lodash": "*",
+		"optimist": "*",
+		"browser-sync": "*",
+		"streamqueue": "*",
+		"run-sequence": "*",
+		"coffee-script": "*"
 
 	}
 
