@@ -44,29 +44,13 @@ app.directive 'ibvSelect', ($timeout) ->
 
 	restrict: 'E'
 	require: '^ngModel'
+	templateUrl: "views/ibv-select.html"
 	scope:
 		ngModel: '='
 		options: '='
 		valField: '@'
 		keyField: '@'
 		placeholder: '@'
-
-	template: """
-		<div class="btn-group">
-			<span class="btn btn-info">{{ label }}</span>
-			<a class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-				<span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li ng-repeat="option in options">
-					<a
-						ng-click="selectVal(option, $index)"
-						ng-bind="getOptionName(option)">
-					</a>
-				</li>
-			</ul>
-		</div>
-	"""
 
 	link: (scope, el, attrs, ngModelCtrl) ->
 
@@ -81,8 +65,11 @@ app.directive 'ibvSelect', ($timeout) ->
 			model = scope.ngModel
 
 			if (typeof model is 'undefined') or (!model)
+
 				scope.label = scope.placeholder
+
 			else
+
 				for option in scope.options
 					if option[valField] is ngModelCtrl.$modelValue
 						scope.label = scope.getOptionName(option)

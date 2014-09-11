@@ -1,0 +1,10 @@
+.btn-group
+	span.btn.btn-info(ng-bind="label")
+	a.btn.btn-info.dropdown-toggle(data-toggle="dropdown")
+		span.caret
+	ul.dropdown-menu(role="menu")
+		li(ng-repeat="option in options")
+			a(
+				ng-click="selectVal(option, $index)"
+				ng-bind="getOptionName(option)"
+				)
