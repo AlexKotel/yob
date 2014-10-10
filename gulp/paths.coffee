@@ -13,8 +13,8 @@ module.exports =
 	scriptsDep:
 		dest: "#{DIST}/js/dep"
 		src: [
-			'bower_components/jquery/dist/jquery.js'
-			'bower_components/bootstrap/dist/js/bootstrap.js'
+			# 'bower_components/jquery/dist/jquery.js'
+			# 'bower_components/bootstrap/dist/js/bootstrap.js'
 			'bower_components/lodash/dist/lodash.js'
 			'bower_components/angular/angular.js'
 		]

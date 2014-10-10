@@ -31,3 +31,70 @@ img
 a
 	transition .2s
 	cursor pointer
+debug
+
+// Select
+.select
+
+	// Style
+	$border-color = darken(#3498db, 20%)
+	$border-width = 2px
+	$border-radius = 5px
+	$background-color = #3498db
+	$placeholder-color = #CCC
+
+	// Modules
+	$label-color = #CCC
+	$label-hight = 50px
+	$toggler-width = 30px
+	$drop-offset = 10px
+
+
+	// Container
+	&-container
+		position relative
+
+
+	// Label
+	&-label
+		margin-right $toggler-width
+		padding-left 10px
+		line-height $label-hight
+		background $background-color
+		border-top $border-width solid $border-color
+		border-left $border-width solid $border-color
+		border-bottom $border-width solid $border-color
+		border-radius $border-radius 0 0 $border-radius
+
+	// Toggler
+	&-toggler
+		width $toggler-width
+		position absolute
+		top 0
+		right 0
+		bottom 0
+		background $background-color
+		border-top $border-width solid $border-color
+		border-left $border-width solid $border-color
+		border-right $border-width solid $border-color
+		border-bottom $border-width solid $border-color
+		border-radius 0 $border-radius $border-radius 0
+
+	// Drop
+	&-drop
+		position absolute
+		top $label-hight + $drop-offset
+		left 0
+		right 0
+		background white
+		border-radius $border-radius
+
+	&-items
+		padding 0 10px
+
+	&-item
+		padding-left 10px
+		line-height 30px
+
+		&.is-selected
+			background $background-color

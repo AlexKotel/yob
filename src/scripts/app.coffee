@@ -1,4 +1,4 @@
-app = angular.module('app', [])
+app = angular.module('app', ['ibv'])
 
 app.controller 'AppController',
 
@@ -18,12 +18,12 @@ app.controller 'AppController',
 				names: []
 				cities: []
 
-			@select.names = []
+			# Names
 			@select.names.push(val: 1, key: 'Vasya')
 			@select.names.push(val: 2, key: 'Slava')
 			@select.names.push(val: 3, key: 'Denchik')
 
-			@select.cities = []
+			# Cities
 			@select.cities.push(val: 1, key: 'Paris')
 			@select.cities.push(val: 2, key: 'Moscow')
 			@select.cities.push(val: 3, key: 'London')
@@ -38,45 +38,6 @@ app.controller 'AppController',
 			@select.names.push(val: 4, key: 'Max')
 			@select.names.push(val: 5, key: 'Klim')
 			@select.names.push(val: 6, key: 'Taran')
-
-
-app.directive 'ibvSelect', ($timeout) ->
-
-	restrict: 'E'
-	require: '^ngModel'
-	templateUrl: "views/ibv-select.html"
-	scope:
-		ngModel: '='
-		options: '='
-		valField: '@'
-		keyField: '@'
-		placeholder: '@'
-
-	link: (scope, el, attrs, ngModelCtrl) ->
-
-		valField = scope.valField.toString().trim()
-		keyField = scope.keyField.toString().trim()
-
-		scope.$watch 'ngModel', ->
-			scope.setLabel()
-
-		scope.setLabel = ->
-			model = scope.ngModel
-			if (typeof model is 'undefined') or (!model)
-				scope.label = scope.placeholder
-			else
-				for option in scope.options
-					if option[valField] is ngModelCtrl.$modelValue
-						scope.label = scope.getOptionKey(option)
-
-		scope.selectVal = (option) ->
-			ngModelCtrl.$setViewValue(option[valField])
-
-		scope.getOptionKey = (option) ->
-			option[keyField]
-
-		scope.getOptionSelected = (option) ->
-			return true if option[keyField] is scope.label
 
 
 # """
