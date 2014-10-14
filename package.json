@@ -1,6 +1,7 @@
 {
 
 	"name": "app",
+
 	"version": "0.0.1",
 
 	"dependencies": {
@@ -41,6 +42,7 @@
 		"gulp-changed": "*",
 		"gulp-plumber": "*",
 		"gulp-template": "*",
+		"gulp-imagemin": "*",
 		"gulp-sourcemaps": "*",
 		"gulp-ng-annotate": "*",
 		"gulp.spritesmith": "*",
@@ -51,7 +53,8 @@
 		"browser-sync": "*",
 		"streamqueue": "*",
 		"run-sequence": "*",
-		"coffee-script": "*"
+		"coffee-script": "*",
+		"css-sprite": "*"
 
 	}
 

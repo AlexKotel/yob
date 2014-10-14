@@ -1,36 +1,73 @@
+sequence = require('run-sequence')
+config = require('../../config')
 paths = require('../paths')
+getFoldersList = require('../utils/getFoldersList')
 argv = require('optimist').argv
 gulp = require('gulp')
-
-
+path = require('path')
+rimraf = require('rimraf')
+fs = require('fs')
+_ = require('lodash')
+TIMESTAMP = Date.now()
 
 $ =
 	if: require('gulp-if')
-	rename: require('gulp-rename')
-	# imagemin: require('gulp-imagemin')
-	spritesmith: require('gulp.spritesmith')
+	sprite: require('css-sprite').stream
+	imagemin: require('gulp-imagemin')
 
 
-module.exports = ->
+tasks = {}
 
-	timestamp = Date.now()
 
-	config =
-		algorithm: 'binary-tree'
-		imgName: 'sprite.png'
-		imgPath: '/img/sprite.png'
-		cssName: 'sprite-png.css'
-		cssOpts:
-			cssClass: (item) -> ".i.i-#{item.name}"
+# Paths for generated png and stylus
+pngDest = path.join(paths.img.cwd, 'sprite-png/')
+stylusDest = path.join(paths.stylesApp.cwd, 'sprite-png/')
 
-	stream = gulp.src("#{paths.src}/tools/sprite-png/src/*.png")
-		# .pipe $.if(argv.prod, $.imagemin())
-		.pipe gulp.dest("#{paths.src}/tools/sprite-png/optimized")
-		.pipe $.spritesmith(config)
 
-	stream.css
-		.pipe $.rename('sprite-png.styl')
-		.pipe gulp.dest("#{paths.stylesApp.cwd}/tools")
+# Register cleaning tasks
+gulp.task 'sprite-png-clean-stylus', (cb) -> rimraf(stylusDest, cb)
+gulp.task 'sprite-png-clean-png', (cb) -> rimraf(pngDest, cb)
+gulp.task 'sprite-png-clean', (cb) ->
+	sequence.apply @, ['sprite-png-clean-stylus', 'sprite-png-clean-png', cb]
 
-	stream.img
-		.pipe gulp.dest(paths.img.cwd)
+
+# Register generators tasks
+for spriteName in getFoldersList(paths.sprites.cwd)
+
+	taskName = "sprite-png-#{spriteName}"
+
+	tasks[taskName] = do ->
+
+		spriteCwd = path.join(paths.sprites.cwd, spriteName)
+		spriteSrc = "#{spriteCwd}/*.png"
+
+		# Default configs
+		pluginConfig =
+			name: "#{spriteName}"
+			prefix: "png-#{spriteName}"
+			style: "#{spriteName}.styl"
+			cssPath: "/img/sprite-png/"
+			margin: 10
+			format: 'png'
+			template: 'gulp/utils/sprite-png.mustache'
+			orientation: 'binary-tree'
+
+		# User configs
+		overrideConfig = config.sprite?.png?[spriteName]
+		if overrideConfig
+			_.extend pluginConfig, overrideConfig
+
+		return ->
+			gulp.src(spriteSrc)
+				# .pipe $.if(argv.prod, $.imagemin())
+				.pipe $.sprite(pluginConfig)
+				.pipe $.if('*.png', gulp.dest(pngDest), gulp.dest(stylusDest))
+
+	gulp.task taskName, tasks[taskName]
+
+
+module.exports = (cb) ->
+
+	spriteTasks = []
+	spriteTasks.push(taskName) for taskName, task of tasks
+	sequence.apply @, ['sprite-png-clean', spriteTasks, cb]

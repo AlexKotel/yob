@@ -1,8 +1,11 @@
+config = require('../../config')
 paths = require('../paths')
 argv = require('optimist').argv
 gulp = require('gulp')
+getFoldersList = require('../utils/getFoldersList')
 
-syncFiles = require('../helpers/syncFiles')
+utils =
+	syncFiles: require('../utils/syncFiles')
 
 tasks =
 	views: require('./views')
@@ -47,11 +50,17 @@ module.exports = ->
 	gulp.watch("#{paths.pages.cwd}/**/*").on 'change', -> tasks.pages(true)
 	gulp.watch(paths.jade.src).on 'change', -> tasks.pages()
 
+
+	# Sprites
+	for spriteName in getFoldersList(paths.sprites.cwd)
+		gulp.watch("#{paths.sprites.cwd}/#{spriteName}/*.png", ["sprite-png-#{spriteName}"])
+
+
 	# Sync remove
-	syncFiles(paths.scriptsApp.cwd, paths.scriptsApp.dest, '.coffee', '.js', tasks.autoinject)
-	syncFiles(paths.pages.cwd, paths.pages.dest, '.jade', '.html')
-	syncFiles(paths.views.cwd, paths.views.dest, '.jade', '.html')
-	syncFiles(paths.img.cwd, paths.img.dest)
-	syncFiles(paths.font.cwd, paths.font.dest)
+	# utils.syncFiles(paths.scriptsApp.cwd, paths.scriptsApp.dest, '.coffee', '.js', tasks.autoinject)
+	# utils.syncFiles(paths.pages.cwd, paths.pages.dest, '.jade', '.html')
+	# utils.syncFiles(paths.views.cwd, paths.views.dest, '.jade', '.html')
+	# utils.syncFiles(paths.img.cwd, paths.img.dest)
+	# utils.syncFiles(paths.font.cwd, paths.font.dest)
 
 

@@ -1,16 +1,14 @@
 doctype html
 
-html
+html(lang='ru')
 
 	head
 
 		meta(charset="UTF-8")
 		meta(http-equiv="X-UA-Compatible", content="IE=edge")
 		meta(name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0')
-
-		//- link(rel="stylesheet", href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/darkly/bootstrap.min.css")
+			
 		//- inject:css
-		link(rel="stylesheet", href="/css/dep/normalize.css")
 		link(rel="stylesheet", href="/css/app/app.css")
 		//- endinject
 
@@ -22,7 +20,7 @@ html
 
 		//- inject:js
 		script(src="/js/dep/lodash.js")
+		script(src="/js/dep/jquery.js")
 		script(src="/js/dep/angular.js")
 		script(src="/js/app/app.js")
-		script(src="/js/app/ibv.js")
 		//- endinject

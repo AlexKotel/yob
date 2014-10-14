@@ -21,7 +21,7 @@ module.exports = (fromPath, toPath, fromExt, toExt, cb = ->) ->
 				e.path = e.path.replace(fromExt, toExt)
 
 			# IMPORTANT!
-			# fromPath must contain '/' on end
+			# `fromPath` must contain '/' on end in Linux
 			query = fromPath
 			index = e.path.indexOf(query)
 			deletedFilePath = e.path.substr(index + query.length)

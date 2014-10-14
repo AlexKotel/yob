@@ -17,4 +17,3 @@ app.use '/', express.static("#{config.dist}")
 
 server.listen app.get('port'), ->
 	console.log "Server started at port: #{app.get('port')}"
-	console.log __dirname

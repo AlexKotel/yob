@@ -13,9 +13,9 @@ module.exports =
 	scriptsDep:
 		dest: "#{DIST}/js/dep"
 		src: [
-			# 'bower_components/jquery/dist/jquery.js'
 			# 'bower_components/bootstrap/dist/js/bootstrap.js'
 			'bower_components/lodash/dist/lodash.js'
+			'bower_components/jquery/dist/jquery.js'
 			'bower_components/angular/angular.js'
 		]
 
@@ -23,26 +23,26 @@ module.exports =
 	stylesDep:
 		dest: "#{DIST}/css/dep"
 		src: [
-			'bower_components/normalize-css/normalize.css'
+			# 'bower_components/bootstrap/dist/css/bootstrap.js'
 		]
 
 
 	scriptsApp:
-		cwd: "#{SRC}/scripts"
+		cwd: "#{SRC}/coffee"
 		dest: "#{DIST}/js/app"
-		main: "#{SRC}/scripts/app.coffee"
+		main: "#{SRC}/coffee/app.coffee"
 		src: [
-			"#{SRC}/scripts/app.coffee"
-			"#{SRC}/scripts/**/*.coffee"
+			"#{SRC}/coffee/app.coffee"
+			"#{SRC}/coffee/**/*.coffee"
 		]
 
 
 	stylesApp:
-		cwd: "#{SRC}/styles"
+		cwd: "#{SRC}/stylus"
 		dest: "#{DIST}/css/app"
-		main: "#{SRC}/styles/app.styl"
+		main: "#{SRC}/stylus/app.styl"
 		src: [
-			"#{SRC}/styles/**/*.styl"
+			"#{SRC}/stylus/**/*.styl"
 		]
 
 
@@ -73,6 +73,10 @@ module.exports =
 		dest: "#{DIST}/font"
 		cwd: "#{SRC}/font"
 		src: ["#{SRC}/font/**/*.{woff,ttf,eot,svg}"]
+
+
+	sprites:
+		cwd: "#{SRC}/utils/sprite-png"
 
 
 	copy: [
