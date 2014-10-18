@@ -21,13 +21,6 @@ gulp.task 'default', ->
 			'views'
 		]
 
-		# [
-		# 	'styles-app'
-		# 	'styles-dep'
-		# 	'scripts-app'
-		# 	'scripts-dep'
-		# ]
-
 		'inject'
 
 		'pages'
