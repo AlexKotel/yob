@@ -11,17 +11,11 @@ module.exports =
 
 
 	scriptsDep:
-		dest: "#{DIST}/js/dep"
-		src: [
-			# 'bower_components/bootstrap/dist/js/bootstrap.js'
-			'bower_components/lodash/dist/lodash.js'
-			'bower_components/jquery/dist/jquery.js'
-			'bower_components/angular/angular.js'
-		]
+		dest: "#{DIST}/js"
 
 
 	stylesDep:
-		dest: "#{DIST}/css/dep"
+		dest: "#{DIST}/css"
 		src: [
 			# 'bower_components/bootstrap/dist/css/bootstrap.js'
 		]
@@ -29,21 +23,16 @@ module.exports =
 
 	scriptsApp:
 		cwd: "#{SRC}/coffee"
-		dest: "#{DIST}/js/app"
-		main: "#{SRC}/coffee/app.coffee"
-		src: [
-			"#{SRC}/coffee/app.coffee"
-			"#{SRC}/coffee/**/*.coffee"
-		]
+		dest: "#{DIST}/js"
+		main: "#{SRC}/coffee/index.coffee"
+		src: ["#{SRC}/coffee/**/*.coffee"]
 
 
 	stylesApp:
 		cwd: "#{SRC}/stylus"
-		dest: "#{DIST}/css/app"
+		dest: "#{DIST}/css"
 		main: "#{SRC}/stylus/app.styl"
-		src: [
-			"#{SRC}/stylus/**/*.styl"
-		]
+		src: ["#{SRC}/stylus/**/*.styl"]
 
 
 	pages:
@@ -59,14 +48,8 @@ module.exports =
 
 
 	jade:
-		injector: "#{SRC}/jade/base/root.jade"
+		main: "#{SRC}/jade/base/root.jade"
 		src: ["#{SRC}/jade/base/**/*.jade"]
-
-
-	img:
-		dest: "#{DIST}/img"
-		cwd: "#{SRC}/img"
-		src: ["#{SRC}/img/**/*.{png,jpg,jpeg,gif,svg}"]
 
 
 	font:
@@ -75,8 +58,16 @@ module.exports =
 		src: ["#{SRC}/font/**/*.{woff,ttf,eot,svg}"]
 
 
+	img:
+		dest: "#{DIST}/img"
+		cwd: "#{SRC}/img"
+		src: ["#{SRC}/img/**/*.{png,jpg,jpeg,gif,svg}"]
+
+
 	sprites:
 		cwd: "#{SRC}/utils/sprite-png"
+		destStylus: "#{SRC}/stylus/sprite-png"
+		destSprite: "#{SRC}/img/sprite-png"
 
 
 	copy: [

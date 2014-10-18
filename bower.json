@@ -7,8 +7,7 @@
 	"dependencies": {
 
 		"lodash": "",
-		"jquery": "1",
-		"angular": ""
+		"jquery": "1"
 
 	}
 

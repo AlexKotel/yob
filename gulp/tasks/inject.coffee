@@ -3,10 +3,12 @@ argv = require('optimist').argv
 gulp = require('gulp')
 streamqueue = require('streamqueue')
 
+
 $ =
 	if: require('gulp-if')
 	inject: require('gulp-inject')
 	concat: require('gulp-concat')
+
 
 tasks =
 	scriptsDep: require('./scripts-dep')
@@ -15,9 +17,7 @@ tasks =
 	stylesApp: require('./styles-app')
 
 
-module.exports = (onWatch = false) ->
-
-	timestamp = Date.now()
+module.exports = ->
 
 	config =
 		addRootSlash: true
@@ -25,18 +25,16 @@ module.exports = (onWatch = false) ->
 
 	jsStream = ->
 		stream = streamqueue(objectMode: true)
-		stream = stream.queue(tasks.scriptsDep) if paths.scriptsDep.src.length
-		stream = stream.queue(tasks.scriptsApp)
+			.queue(tasks.scriptsDep)
+			.queue(tasks.scriptsApp)
 			.done()
-			.pipe $.if(argv.prod, $.concat("build-#{timestamp}.js"))
-			.pipe $.if(argv.prod, gulp.dest(paths.scriptsApp.dest))
 
 	cssStream = ->
 		stream = streamqueue(objectMode: true)
 		stream = stream.queue(tasks.stylesDep) if paths.stylesDep.src.length
 		stream = stream.queue(tasks.stylesApp)
 			.done()
-			.pipe $.if(argv.prod, $.concat("build-#{timestamp}.css"))
+			.pipe $.if(argv.prod, $.concat("app.css"))
 			.pipe $.if(argv.prod, gulp.dest(paths.stylesApp.dest))
 
 	injectStream = ->
@@ -45,6 +43,6 @@ module.exports = (onWatch = false) ->
 			.queue(cssStream)
 			.done()
 
-	stream = gulp.src(paths.jade.injector)
+	stream = gulp.src(paths.jade.main)
 		.pipe $.inject(injectStream(), config)
 		.pipe gulp.dest("#{paths.src}/jade/base")

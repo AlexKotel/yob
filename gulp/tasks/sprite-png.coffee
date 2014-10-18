@@ -10,6 +10,7 @@ fs = require('fs')
 _ = require('lodash')
 TIMESTAMP = Date.now()
 
+
 $ =
 	if: require('gulp-if')
 	sprite: require('css-sprite').stream
@@ -19,14 +20,9 @@ $ =
 tasks = {}
 
 
-# Paths for generated png and stylus
-pngDest = path.join(paths.img.cwd, 'sprite-png/')
-stylusDest = path.join(paths.stylesApp.cwd, 'sprite-png/')
-
-
 # Register cleaning tasks
-gulp.task 'sprite-png-clean-stylus', (cb) -> rimraf(stylusDest, cb)
-gulp.task 'sprite-png-clean-png', (cb) -> rimraf(pngDest, cb)
+gulp.task 'sprite-png-clean-stylus', (cb) -> rimraf(paths.sprites.destStylus, cb)
+gulp.task 'sprite-png-clean-png', (cb) -> rimraf(paths.sprites.destSprite, cb)
 gulp.task 'sprite-png-clean', (cb) ->
 	sequence.apply @, ['sprite-png-clean-stylus', 'sprite-png-clean-png', cb]
 
@@ -61,7 +57,7 @@ for spriteName in getFoldersList(paths.sprites.cwd)
 			gulp.src(spriteSrc)
 				# .pipe $.if(argv.prod, $.imagemin())
 				.pipe $.sprite(pluginConfig)
-				.pipe $.if('*.png', gulp.dest(pngDest), gulp.dest(stylusDest))
+				.pipe $.if('*.png', gulp.dest(paths.sprites.destSprite), gulp.dest(paths.sprites.destStylus))
 
 	gulp.task taskName, tasks[taskName]
 

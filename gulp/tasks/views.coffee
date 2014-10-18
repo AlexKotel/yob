@@ -1,6 +1,7 @@
 paths = require('../paths')
 gulp = require('gulp')
 
+
 $ =
 	if: require('gulp-if')
 	jade: require('gulp-jade')
@@ -10,6 +11,9 @@ $ =
 
 module.exports = (onlyChanged = false) ->
 
+	jadeConfig =
+		preqtty: true
+
 	stream = gulp.src(paths.views.src)
 
 	if onlyChanged
@@ -17,5 +21,5 @@ module.exports = (onlyChanged = false) ->
 
 	stream = stream
 		.pipe $.plumber()
-		.pipe $.jade(pretty: true)
+		.pipe $.jade(jadeConfig)
 		.pipe gulp.dest(paths.views.dest)

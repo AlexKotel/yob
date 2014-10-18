@@ -6,6 +6,8 @@ fs = require('fs')
 
 gulp.task 'default', ->
 
+	console.time('Build time:')
+
 	sequence.apply @, [
 
 		'clean'
@@ -15,9 +17,16 @@ gulp.task 'default', ->
 		[
 			'img'
 			'font'
-			'views'
 			'copy'
+			'views'
 		]
+
+		# [
+		# 	'styles-app'
+		# 	'styles-dep'
+		# 	'scripts-app'
+		# 	'scripts-dep'
+		# ]
 
 		'inject'
 
@@ -28,5 +37,7 @@ gulp.task 'default', ->
 			'browsersync'
 			'server'
 		]
+
+		-> console.timeEnd('Build time:')
 
 	]

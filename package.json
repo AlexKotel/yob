@@ -7,17 +7,7 @@
 	"dependencies": {
 
 		"express": "4",
-		"mongoose": "*",
-		"socket.io": "*",
-
-		"morgan": "*",
-		"body-parser": "*",
-		"cookie-parser": "*",
-		"method-override": "*",
-		"connect-mongo": "*",
-		"connect-redis": "*",
-		"serve-favicon": "*",
-		"express-session": "*",
+		"compression": "",
 		"coffee-script": "*"
 
 	},
@@ -32,7 +22,6 @@
 		"gulp-concat": "*",
 		"gulp-rename": "*",
 		"gulp-rimraf": "*",
-		"gulp-ignore": "*",
 		"gulp-filter": "*",
 		"gulp-uglify": "*",
 		"gulp-coffee": "*",
@@ -45,8 +34,8 @@
 		"gulp-imagemin": "*",
 		"gulp-sourcemaps": "*",
 		"gulp-ng-annotate": "*",
-		"gulp.spritesmith": "*",
 		"gulp-autoprefixer": "*",
+		
 		"rimraf": "*",
 		"lodash": "*",
 		"optimist": "*",
@@ -54,7 +43,24 @@
 		"streamqueue": "*",
 		"run-sequence": "*",
 		"coffee-script": "*",
-		"css-sprite": "*"
+		"css-sprite": "*",
+		"gulp-browserify": "*",
+
+		"browserify-shim": "*",
+		"coffeeify": "*"
+
+	},
+
+	"browserify": {
+		"transform": ["browserify-shim", "coffeeify"]
+	},
+
+	"browser": {
+		"lodash": "./bower_components/lodash/dist/lodash.js",
+		"jquery": "./bower_components/jquery/dist/jquery.js"
+	},
+
+	"browserify-shim": {
 
 	}
 

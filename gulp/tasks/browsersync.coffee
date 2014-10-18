@@ -15,7 +15,7 @@ module.exports = (cb) ->
 	]
 
 	config =
-		proxy: "localhost:#{process.env.PORT or config.port.static}"
+		proxy: "localhost:#{config.port.static}"
 		ports:
 			min: config.port.browserSync
 			max: config.port.browserSync
@@ -32,4 +32,5 @@ module.exports = (cb) ->
 			location: true
 
 	browsersync.init(files, config)
+	
 	cb()

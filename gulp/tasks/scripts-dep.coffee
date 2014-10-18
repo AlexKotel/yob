@@ -1,16 +1,34 @@
+pack = require('../../package.json')
 paths = require('../paths')
 argv = require('optimist').argv
 gulp = require('gulp')
+path = require('path')
+
 
 $ =
 	if: require('gulp-if')
-	concat: require('gulp-concat')
 	uglify: require('gulp-uglify')
+	rename: require('gulp-rename')
+	plumber: require('gulp-plumber')
+	browserify: require('gulp-browserify')
 
 
 module.exports = ->
 
-	stream = gulp.src(paths.scriptsDep.src)
-		.pipe $.if(argv.prod, $.concat('vendor.min.css'))
+	requireAll = (bundle) ->
+		for vendor, path of pack.browser
+			bundle.require(vendor)
+
+	bundleConfig =
+		debug: false
+
+	noop = path.join(__dirname, '../utils/noop.js')
+
+	stream = gulp.src(noop, read: false)
+		.pipe $.browserify(bundleConfig)
+		.on 'prebundle', requireAll
+
+	stream
+		.pipe $.rename('vendor.js')
 		.pipe $.if(argv.prod, $.uglify())
-		.pipe $.if(!argv.prod, gulp.dest(paths.scriptsDep.dest))
+		.pipe gulp.dest(paths.scriptsDep.dest)

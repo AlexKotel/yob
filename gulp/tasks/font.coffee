@@ -1,6 +1,7 @@
 paths = require('../paths')
 gulp = require('gulp')
 
+
 $ =
 	changed: require('gulp-changed')
 

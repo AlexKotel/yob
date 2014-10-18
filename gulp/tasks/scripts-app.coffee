@@ -1,32 +1,36 @@
+pack = require('../../package.json')
 paths = require('../paths')
 argv = require('optimist').argv
 gulp = require('gulp')
 
+
 $ =
 	if: require('gulp-if')
-	coffee: require('gulp-coffee')
-	concat: require('gulp-concat')
 	uglify: require('gulp-uglify')
+	rename: require('gulp-rename')
 	plumber: require('gulp-plumber')
-	changed: require('gulp-changed')
-	sourcemaps: require('gulp-sourcemaps')
 	ngAnnotate: require('gulp-ng-annotate')
+	browserify: require('gulp-browserify')
 
 
-module.exports = (onlyChanged = false) ->
+module.exports = ->
 
-	stream = gulp.src(paths.scriptsApp.src)
+	externalAll = (bundle) ->
+		for vendor, path of pack.browser
+			bundle.external(vendor)
 
-	if onlyChanged
-		stream = stream
-			.pipe $.changed(paths.scriptsApp.dest, extension: '.js')
+	bundleConfig =
+		debug: !argv.prod
+		extensions: ['.coffee']
+
+	stream = gulp.src(paths.scriptsApp.main, read: false)
 
 	stream = stream
 		.pipe $.plumber()
-		.pipe $.if(!argv.prod, $.sourcemaps.init())
-		.pipe $.coffee()
-		.pipe $.if(argv.prod, $.concat('app.concated.js'))
-		.pipe $.if(argv.prod, $.ngAnnotate())
+		.pipe $.browserify(bundleConfig)
+		.on 'prebundle', externalAll
+
+	stream
+		.pipe $.rename('app.js')
 		.pipe $.if(argv.prod, $.uglify(mangle: false))
-		.pipe $.if(!argv.prod, $.sourcemaps.write())
-		.pipe $.if(!argv.prod, gulp.dest(paths.scriptsApp.dest))
+		.pipe gulp.dest(paths.scriptsApp.dest)
